@@ -42,15 +42,15 @@
       auto-complete="on"
       label-position="left"
     >
-      <el-form-item prop="username">
+      <el-form-item prop="phone">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
+          ref="phone"
+          v-model="loginForm.phone"
           placeholder="请输入注册时的手机号"
-          name="username"
+          name="phone"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -98,14 +98,15 @@
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
+// import { validUsername } from "@/utils/validate";
 import $ from "jquery";
+import md5 from "js-md5";
 
 export default {
   name: "Login",
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
+      if (value.length != 11) {
         callback(new Error("请输入正确的手机号"));
       } else {
         callback();
@@ -120,8 +121,8 @@ export default {
     };
     return {
       loginForm: {
-        username: "admin",
-        password: "111111",
+        phone: "18600000001",
+        password: "1",
       },
       loginRules: {
         username: [
@@ -162,20 +163,29 @@ export default {
       $(".alertD").css("display", "none");
     },
     handleLogin() {
+      let paramt = {
+        phone: this.loginForm.phone,
+        password: this.$md5(this.loginForm.password),
+      };
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
+          this.$store;
           this.$store
-            .dispatch("user/login", this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || "/" });
+            .dispatch("user/login", paramt)
+            .then((res) => {
+              console.log(res);
+              let userList = res.data.data;
+              sessionStorage.setItem("token", res.date);
+              //vuex中的数据刷新页面会消失
+              this.$router.push("/layout");
               this.loading = false;
             })
-            .catch(() => {
+            .catch((err) => {
               this.loading = false;
             });
         } else {
-          console.log("error submit!!");
+          console.log("请填写正确的账号密码");
           return false;
         }
       });

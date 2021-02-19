@@ -24,8 +24,8 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: './',
-  outputDir: 'dist',
+  publicPath: './',  //请根据自己路径来配置更改
+  outputDir: 'dist',  //打包npm run build:prod 后生成
   assetsDir: 'static',
   // lintOnSave: process.env.NODE_ENV === 'development',
   lintOnSave: false,
@@ -57,9 +57,18 @@ module.exports = {
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
         }
+      },
+      // 配置跨域地址
+      '/api': {
+        target: `http://124.193.79.18:8099/gdjfnx`,
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/api': ''
+        }
       }
     },
-    before: require('./mock/mock-server.js')
+    // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
