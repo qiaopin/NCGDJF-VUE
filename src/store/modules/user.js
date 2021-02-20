@@ -6,7 +6,7 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
   }
 }
 
@@ -34,11 +34,11 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ phone: phone.trim(), password: password }).then(response => {
         // sessionStorage.setItem("token", response.date);
-        const { data } = response
-        console.log(response)
-        console.log(data)
-        commit('SET_TOKEN', response.date)
-        setToken(response.date)
+        const { ...data } = response
+        // console.log(response)
+        // console.log(data)
+        commit('SET_TOKEN', data.date)
+        setToken(data.date)
         resolve()
       }).catch(error => {
         reject(error)
@@ -53,7 +53,7 @@ const actions = {
         const { data } = response
 
         if (!data) {
-          return reject('Verification failed, please Login again.')
+          return reject('验证失败，请重新登录.')
         }
 
         const { name, avatar } = data

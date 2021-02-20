@@ -4,36 +4,6 @@
       <h3 class="title">河北省农村乱占耕地建房专项整治系统平台</h3>
     </div>
 
-    <div class="alertD">
-      <div style="text-align: center" class="content">
-        <i class="el-icon-close" @click="closeAPP"></i>
-        <div><span style="color: red">当前app仅支持安卓手机</span></div>
-        <div>
-          打开手机浏览器输入http://110.249.159.46:8099/download/app-release.apk
-        </div>
-        <div>
-          (或者使用手机浏览器扫描下方二维码(<span style="color: red"
-            >不支持直接使用微信扫码</span
-          >)
-        </div>
-        <div class="imgBox">
-          <img
-            src="@/assets/ncgdjfAppSJZ.png"
-            width="100"
-            height="100"
-            alt=""
-          />
-        </div>
-        <div>
-          或者先<a
-            style="color: blue"
-            href="http://110.249.159.46:8099/download/app-release.apk"
-            >下载到电脑端</a
-          >再发送到手机进行安装
-        </div>
-      </div>
-    </div>
-
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -44,7 +14,8 @@
     >
       <el-form-item prop="phone">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          <svg-icon icon-class="phone" />
+          <!-- <i class="el-icon-phone"></i> -->
         </span>
         <el-input
           ref="phone"
@@ -82,18 +53,57 @@
       <el-button
         :loading="loading"
         type="primary"
-        style="width: 100%; margin-bottom: 30px"
+        style="width: 100%; margin-bottom: 20px"
         @click.native.prevent="handleLogin"
         >登录</el-button
       >
 
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width: 100%; margin-bottom: 30px; margin-left: 0"
+        @click.native.prevent="registered"
+        >注册</el-button
+      >
+
       <div class="tips">
-        <span style="margin-right: 150px; cursor: pointer" @click="loadAPP"
+        <span
+          style="margin-right: 150px; cursor: pointer"
+          @click="showDialog = true"
           >手机端下载</span
         >
         <span style="cursor: pointer"> 忘记密码</span>
       </div>
     </el-form>
+
+    <el-dialog title="下载" :visible.sync="showDialog">
+      <div class="alertD">
+        <div><span style="color: red">当前app仅支持安卓手机</span></div>
+        <div>
+          打开手机浏览器输入http://110.249.159.46:8099/download/app-release.apk
+        </div>
+        <div>
+          (或者使用手机浏览器扫描下方二维码(<span style="color: red"
+            >不支持直接使用微信扫码</span
+          >)
+        </div>
+        <div class="imgBox">
+          <img
+            src="@/assets/ncgdjfAppSJZ.png"
+            width="200"
+            height="200"
+            alt=""
+          />
+        </div>
+        <div>
+          或者先<a
+            style="color: blue"
+            href="http://110.249.159.46:8099/download/app-release.apk"
+            >下载到电脑端</a
+          >再发送到手机进行安装
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -135,6 +145,7 @@ export default {
       loading: false,
       passwordType: "password",
       redirect: undefined,
+      showDialog: false,
     };
   },
   watch: {
@@ -156,12 +167,6 @@ export default {
         this.$refs.password.focus();
       });
     },
-    loadAPP() {
-      $(".alertD").css("display", "block");
-    },
-    closeAPP() {
-      $(".alertD").css("display", "none");
-    },
     handleLogin() {
       let paramt = {
         phone: this.loginForm.phone,
@@ -174,11 +179,9 @@ export default {
           this.$store
             .dispatch("user/login", paramt)
             .then((res) => {
-              console.log(res);
-              let userList = res.data.data;
-              sessionStorage.setItem("token", res.date);
+              // sessionStorage.setItem("token", res.date);
               //vuex中的数据刷新页面会消失
-              this.$router.push("/layout");
+              this.$router.push({ path: this.redirect || "/" });
               this.loading = false;
             })
             .catch((err) => {
@@ -189,6 +192,9 @@ export default {
           return false;
         }
       });
+    },
+    registered() {
+      this.$router.push({ path: this.redirect || "/" });
     },
   },
 };
@@ -267,7 +273,7 @@ $light_gray: #eee;
     max-width: 100%;
     background: url(../../assets/login-box.png) no-repeat;
     background-size: 100%;
-    padding: 90px 60px 0;
+    padding: 60px 60px 0;
     margin: 0 auto;
     overflow: hidden;
 
@@ -324,33 +330,6 @@ $light_gray: #eee;
     }
   }
 
-  .alertD {
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.4);
-    width: 100%;
-    height: 100%;
-    display: none;
-
-    .content {
-      position: absolute;
-      background-color: #fff;
-      top: 30%;
-      left: 30%;
-      color: #000;
-      padding: 50px;
-      z-index: 99;
-      line-height: 30px;
-      border-radius: 8px;
-
-      .el-icon-close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 25px;
-      }
-    }
-  }
-
   .show-pwd {
     position: absolute;
     right: 10px;
@@ -359,6 +338,31 @@ $light_gray: #eee;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
+  }
+}
+
+.alertD {
+  text-align: center;
+  line-height: 40px;
+  font-size: 18px;
+
+  texr-a .content {
+    position: absolute;
+    background-color: #fff;
+    top: 30%;
+    left: 30%;
+    color: #000;
+    padding: 50px;
+    z-index: 99;
+    line-height: 30px;
+    border-radius: 8px;
+
+    .el-icon-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 25px;
+    }
   }
 }
 </style>
