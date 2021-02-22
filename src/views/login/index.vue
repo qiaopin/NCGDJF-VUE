@@ -59,10 +59,10 @@
       >
 
       <el-button
-        :loading="loading"
+        :loading="zc"
         type="primary"
         style="width: 100%; margin-bottom: 30px; margin-left: 0"
-        @click.native.prevent="registered"
+        @click.native.prevent="registered = true"
         >注册</el-button
       >
 
@@ -72,37 +72,22 @@
           @click="showDialog = true"
           >手机端下载</span
         >
-        <span style="cursor: pointer"> 忘记密码</span>
+        <span style="cursor: pointer" @click="forgetPassword = true">
+          忘记密码</span
+        >
       </div>
     </el-form>
 
-    <el-dialog title="下载" :visible.sync="showDialog">
-      <div class="alertD">
-        <div><span style="color: red">当前app仅支持安卓手机</span></div>
-        <div>
-          打开手机浏览器输入http://110.249.159.46:8099/download/app-release.apk
-        </div>
-        <div>
-          (或者使用手机浏览器扫描下方二维码(<span style="color: red"
-            >不支持直接使用微信扫码</span
-          >)
-        </div>
-        <div class="imgBox">
-          <img
-            src="@/assets/ncgdjfAppSJZ.png"
-            width="200"
-            height="200"
-            alt=""
-          />
-        </div>
-        <div>
-          或者先<a
-            style="color: blue"
-            href="http://110.249.159.46:8099/download/app-release.apk"
-            >下载到电脑端</a
-          >再发送到手机进行安装
-        </div>
-      </div>
+    <el-dialog class="openLay" title="注册" :visible.sync="registered">
+      <registered></registered>
+    </el-dialog>
+
+    <el-dialog class="customWidth" title="下载" :visible.sync="showDialog">
+      <showDialog></showDialog>
+    </el-dialog>
+
+    <el-dialog class="openLay" title="忘记密码" :visible.sync="forgetPassword">
+      <forget-password></forget-password>
     </el-dialog>
   </div>
 </template>
@@ -111,9 +96,13 @@
 // import { validUsername } from "@/utils/validate";
 import $ from "jquery";
 import md5 from "js-md5";
+import ShowDialog from "./components/showDialog";
+import ForgetPassword from "./components/forgetPassword";
+import Registered from "./components/registered";
 
 export default {
   name: "Login",
+  components: { ShowDialog, ForgetPassword, Registered },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (value.length != 11) {
@@ -134,6 +123,7 @@ export default {
         phone: "18600000001",
         password: "1",
       },
+
       loginRules: {
         username: [
           { required: true, trigger: "blur", validator: validateUsername },
@@ -143,9 +133,13 @@ export default {
         ],
       },
       loading: false,
+      zc: false,
+
       passwordType: "password",
       redirect: undefined,
       showDialog: false,
+      forgetPassword: false,
+      registered: false,
     };
   },
   watch: {
@@ -193,9 +187,10 @@ export default {
         }
       });
     },
-    registered() {
-      this.$router.push({ path: this.redirect || "/" });
-    },
+    // registered() {
+    //   // this.zc = true;
+    //   // this.$router.push({ path: this.redirect || "/" });
+    // },
   },
 };
 </script>
@@ -243,6 +238,47 @@ $cursor: #fff;
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     color: #454545;
+  }
+}
+
+.customWidth {
+  width: 75%;
+  margin: 0 auto;
+}
+
+.openLay {
+  width: 60%;
+  margin: 0 auto;
+
+  .FPForm {
+    // margin: 20px 50px;
+
+    .el-form-item {
+      background-color: rgba(255, 255, 255, 0);
+      // color: #999;
+
+      .el-input {
+        border: 1px solid #dcdfe6;
+        border-radius: 4px;
+
+        input {
+          color: #999;
+          caret-color: #999;
+        }
+      }
+
+      .VerificationCode {
+        width: 40%;
+      }
+
+      .register {
+        margin-left: 20px;
+        height: 45px;
+      }
+    }
+  }
+  .dialog-footer {
+    text-align: center;
   }
 }
 </style>
@@ -344,7 +380,7 @@ $light_gray: #eee;
 .alertD {
   text-align: center;
   line-height: 40px;
-  font-size: 18px;
+  font-size: 16px;
 
   texr-a .content {
     position: absolute;
