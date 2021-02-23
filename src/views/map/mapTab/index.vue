@@ -40,7 +40,7 @@ export default {
   right: 15px;
   bottom: 50px;
   width: mapTabWidth;
-  z-index: 11;
+  z-index: 12;
   border: 1px solid #aaa;
 
   .title {
