@@ -15,6 +15,8 @@
 </template>
 
 <script>
+// import store from '@/store'
+
 export default {
   data() {
     return {
@@ -40,6 +42,7 @@ export default {
   },
   methods: {
     changeBaseMap(type) {
+      this.$store.commit('SET_MAPTYPE', type)
       this.activeType = type
     },
   },
@@ -71,11 +74,13 @@ export default {
     left: 0;
     text-align: center;
     font-size: 14px;
+    opacity: 0.5;
   }
 
   .active .title {
     background: #83a1ff;
     color: #fff;
+    opacity: 1;
   }
 }
 </style>

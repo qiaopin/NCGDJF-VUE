@@ -5,7 +5,6 @@
   </div>
 </template>
 <script>
-import TileGrid from 'ol/tilegrid/TileGrid'
 import VectorSource from 'ol/source/Vector'
 import VectorLayer from 'ol/layer/Vector'
 import TileImage from 'ol/source/TileImage'
@@ -17,7 +16,7 @@ import olstyleText from 'ol/style/Text'
 import olstyleFill from 'ol/style/Fill'
 import olstyleStroke from 'ol/style/Stroke'
 
-import { initMap } from '@/utils/mapBase'
+import { initMap, changeBaseMap } from '@/utils/mapBase'
 
 import mapTab from './mapTab'
 
@@ -37,7 +36,6 @@ export default {
     //渲染地图
     this.mapObject = initMap()
     this.view = this.mapObject.getView()
-    // this.addMarker("hheh", 116, 39);
 
     var vector = new VectorLayer({
       source: new VectorSource({ features: [], wrapX: false }),
@@ -48,9 +46,21 @@ export default {
 
     this.vectorSource = vector.getSource()
 
-    this.addMarker('hheheh', 116, 39)
+    // this.addMarker('hheheh', 116, 39)
+    var mapType = this.$store.getters.mapType
+    console.log(mapType)
   },
-  watch: {},
+  computed: {
+    getMapType() {
+      return this.$store.getters.mapType //需要监听的数据
+    },
+  },
+  watch: {
+    getMapType(newVal, oldVal) {
+      //监听切换底图
+      changeBaseMap(this.mapObject, newVal)
+    },
+  },
   methods: {
     /*
      *标注点

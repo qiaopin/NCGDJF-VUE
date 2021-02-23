@@ -52,6 +52,7 @@ export function initMap(target) {
     var wmtsUrl_3 = "http://t{0-7}.tianditu.com/img_c/wmts?tk="; //影像底图
     var wmtsUrl_4 = "http://t{0-7}.tianditu.com/cia_c/wmts?tk="; //影像注记
 
+    //矢量底图
     var layerSL = new TileLayer({
         opacity: 0.7,
         source: new WMTS({
@@ -68,28 +69,10 @@ export function initMap(target) {
             }),
             wrapX: true,
         }),
+        name: 'sl'
     });
-
-    var layerYX = new TileLayer({
-        opacity: 0.7,
-        source: new WMTS({
-            url: wmtsUrl_3 + webKey,
-            layer: "img",
-            matrixSet: "c",
-            format: "tiles",
-            style: "default",
-            projection: projection,
-            tileGrid: new WMTSTileGrid({
-                origin: getTopLeft(projectionExtent),
-                resolutions: resolutions,
-                matrixIds: matrixIds,
-            }),
-            wrapX: true,
-        }),
-        maxZoom: 18
-    });
-
-    var layerSLBZ = new TileLayer({
+    //矢量注记
+    var layerSLZJ = new TileLayer({
         opacity: 0.7,
         source: new WMTS({
             url: wmtsUrl_2 + webKey,
@@ -105,10 +88,33 @@ export function initMap(target) {
             }),
             wrapX: true,
         }),
+        name: "sl-zj"
     });
-
-    var layerYXBZ = new TileLayer({
+    //影像底图
+    var layerYX = new TileLayer({
         opacity: 0.7,
+        visible: false,
+        source: new WMTS({
+            url: wmtsUrl_3 + webKey,
+            layer: "img",
+            matrixSet: "c",
+            format: "tiles",
+            style: "default",
+            projection: projection,
+            tileGrid: new WMTSTileGrid({
+                origin: getTopLeft(projectionExtent),
+                resolutions: resolutions,
+                matrixIds: matrixIds,
+            }),
+            wrapX: true,
+        }),
+        maxZoom: 18,
+        name: "yx"
+    });
+    //影像注记
+    var layerYXZJ = new TileLayer({
+        opacity: 0.7,
+        visible: false,
         source: new WMTS({
             url: wmtsUrl_4 + webKey,
             layer: "cia",
@@ -123,8 +129,9 @@ export function initMap(target) {
             }),
             wrapX: true,
         }),
+        name: "yx-zj"
     });
-
+    //bing底图
     var bingLayer = new TileLayer({
         visible: true,
         preload: Infinity,
@@ -136,19 +143,20 @@ export function initMap(target) {
             maxZoom: 19,
         }),
     });
-
+    //高德底图
     var gaodeLayer = new TileLayer({
         source: new XYZ({
             url: "http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=6&x={x}&y={y}&z={z}",
         }),
     });
-
+    //mapbox底图
     var mapboxLayer = new TileLayer({
         source: new XYZ({
             url: "https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.jpg?access_token=pk.eyJ1Ijoid2FuZ2hhaGExIiwiYSI6ImNqeHUycXF5ZDEweDQzYnBiOTcwZGoxMHAifQ.eCGuiA6erHJ7ew-Fkc7dRA",
         }),
         minZoom: 18,
-        maxZoom: 25
+        maxZoom: 25,
+        name: 'yx-mapbox'
     });
 
     var mapView = new View({
@@ -166,15 +174,39 @@ export function initMap(target) {
         undefinesHTML: "&nbsp;",
     });
 
+    var baseMapArr = [
+        mapboxLayer,
+        layerSL,
+        layerSLZJ,
+        layerYX,
+        layerYXZJ,
+    ]
+
     var mapObject = new Map({
         controls: defaultControls().extend([mousePositionControl]),
-        layers: [
-            mapboxLayer,
-            layerYX,
-            layerYXBZ,
-        ],
+        layers: baseMapArr,
         target: target,
         view: mapView,
     });
+
     return mapObject;
+}
+
+//切换底图
+export function changeBaseMap(mapObject, type) {
+    var layers = mapObject.getLayers()
+    layers.forEach((item) => {
+        var name = item.get('name')
+        if (type != 'wu') {
+            if (name) {
+                if (name.indexOf(type) > -1) {
+                    item.setVisible(true)
+                } else {
+                    item.setVisible(false)
+                }
+            }
+        } else {
+            item.setVisible(false)
+        }
+    })
 }
