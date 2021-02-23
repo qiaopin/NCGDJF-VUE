@@ -94,105 +94,102 @@
 
 <script>
 // import { validUsername } from "@/utils/validate";
-import $ from "jquery";
-import md5 from "js-md5";
-import ShowDialog from "./components/showDialog";
-import ForgetPassword from "./components/forgetPassword";
-import Registered from "./components/registered";
+import $ from 'jquery'
+import md5 from 'js-md5'
+import ShowDialog from './components/showDialog'
+import ForgetPassword from './components/forgetPassword'
+import Registered from './components/registered'
 
 export default {
-  name: "Login",
+  name: 'Login',
   components: { ShowDialog, ForgetPassword, Registered },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (value.length != 11) {
-        callback(new Error("请输入正确的手机号"));
+        callback(new Error('请输入正确的手机号'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 1) {
-        callback(new Error("请输入密码"));
+        callback(new Error('请输入密码'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       loginForm: {
-        phone: "18600000001",
-        password: "1",
+        phone: '18600000001',
+        password: '1',
       },
 
       loginRules: {
         username: [
-          { required: true, trigger: "blur", validator: validateUsername },
+          { required: true, trigger: 'blur', validator: validateUsername },
         ],
         password: [
-          { required: true, trigger: "blur", validator: validatePassword },
+          { required: true, trigger: 'blur', validator: validatePassword },
         ],
       },
       loading: false,
       zc: false,
 
-      passwordType: "password",
+      passwordType: 'password',
       redirect: undefined,
       showDialog: false,
       forgetPassword: false,
       registered: false,
-    };
+    }
   },
   watch: {
     $route: {
       handler: function (route) {
-        this.redirect = route.query && route.query.redirect;
+        this.redirect = route.query && route.query.redirect
       },
       immediate: true,
     },
   },
   methods: {
     showPwd() {
-      if (this.passwordType === "password") {
-        this.passwordType = "";
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
       } else {
-        this.passwordType = "password";
+        this.passwordType = 'password'
       }
       this.$nextTick(() => {
-        this.$refs.password.focus();
-      });
+        this.$refs.password.focus()
+      })
     },
     handleLogin() {
       let paramt = {
         phone: this.loginForm.phone,
         password: this.$md5(this.loginForm.password),
-      };
+      }
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          this.loading = true;
-          this.$store;
+          this.loading = true
           this.$store
-            .dispatch("user/login", paramt)
+          this.$store
+            .dispatch('user/login', paramt)
             .then((res) => {
               // sessionStorage.setItem("token", res.date);
               //vuex中的数据刷新页面会消失
-              this.$router.push({ path: this.redirect || "/" });
-              this.loading = false;
+              // this.$router.push({ path: this.redirect || '/' })
+              this.$router.push({ path: '/slinge' })
+              this.loading = false
             })
             .catch((err) => {
-              this.loading = false;
-            });
+              this.loading = false
+            })
         } else {
-          console.log("请填写正确的账号密码");
-          return false;
+          console.log('请填写正确的账号密码')
+          return false
         }
-      });
+      })
     },
-    // registered() {
-    //   // this.zc = true;
-    //   // this.$router.push({ path: this.redirect || "/" });
-    // },
   },
-};
+}
 </script>
 
 <style lang="scss">

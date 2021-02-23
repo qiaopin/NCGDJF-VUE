@@ -106,7 +106,7 @@
       :label-width="formLabelWidth"
     >
       <el-select
-        v-model="registeredForm.cunName"
+        v-model="registeredForm.cmc"
         clearable
         :disabled="cun"
         placeholder="请选择"
@@ -121,6 +121,9 @@
         </el-option>
       </el-select>
     </el-form-item>
+    <el-form-item label="身份证号" :label-width="formLabelWidth">
+      <el-input v-model="registeredForm.sfz" autocomplete="off"></el-input>
+    </el-form-item>
   </el-form>
 </template>
 
@@ -130,44 +133,45 @@ export default {
     return {
       options: [
         {
-          shiName: "选项1",
-          label: "石家庄市",
+          shiName: '选项1',
+          label: '石家庄市',
         },
         {
-          shiName: "选项2",
-          label: "唐山市",
+          shiName: '选项2',
+          label: '唐山市',
         },
         {
-          shiName: "选项3",
-          label: "邯郸市",
+          shiName: '选项3',
+          label: '邯郸市',
         },
         {
-          shiName: "选项4",
-          label: "唐山市",
+          shiName: '选项4',
+          label: '唐山市',
         },
         {
-          shiName: "选项5",
-          label: "邢台市",
+          shiName: '选项5',
+          label: '邢台市',
         },
       ],
       registeredForm: {
-        style: "",
-        shengName: "河北省",
-        shiName: "",
-        xianName: "",
-        xiangName: "",
-        cunName: "",
+        style: '',
+        shengName: '河北省',
+        shiName: '',
+        xianName: '',
+        xiangName: '',
+        cmc: '',
+        sfz: '',
       },
       shengName: true,
       shi: false,
       xian: true,
       xiang: true,
       cun: true,
-      formLabelWidth: "120px",
-    };
+      formLabelWidth: '120px',
+    }
   },
   methods: {},
-};
+}
 </script>
 
 <style lang="scss" scoped>
