@@ -54,7 +54,18 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-
+  {
+    path: '/map',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: '地图',
+        component: () => import('@/views/map/index'),
+        meta: { title: '地图', icon: 'form' }
+      }
+    ]
+  },
   {
     path: '/example',
     component: Layout,

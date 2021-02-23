@@ -64,32 +64,29 @@ export default {
   data() {
     return {
       form: {
-        phoneNumber: "",
-        newPassword: "",
-        ConfirmPassword: "",
+        phoneNumber: '',
+        newPassword: '',
+        ConfirmPassword: '',
       },
-      formLabelWidth: "120px",
-      forgetformLabelWidth: "60px",
+      formLabelWidth: '120px',
+      forgetformLabelWidth: '60px',
       register: false,
-      send: "发送(60s)",
+      send: '发送(60s)',
       verShow: true,
       timer: 60,
-    };
+    }
   },
   methods: {
     handleClick() {
-      this.verShow = false;
+      this.verShow = false
       var auth_timer = setInterval(() => {
-        this.timer--;
+        this.timer--
         if (this.timer <= 0) {
-          this.verShow = true;
-          clearInterval(auth_timer);
+          this.verShow = true
+          clearInterval(auth_timer)
         }
-      }, 1000);
+      }, 1000)
     },
   },
-};
+}
 </script>
-
-<style>
-</style>
