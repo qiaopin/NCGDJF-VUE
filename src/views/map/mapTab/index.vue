@@ -1,8 +1,15 @@
 <template>
   <div class="mapTab">
-    <div class="tabItem" v-for="(item, index) in mapTabArr" :key="index">
+    <div
+      :class="item.type == activeType ? 'active tabItem' : 'tabItem'"
+      v-for="(item, index) in mapTabArr"
+      :key="index"
+      @click="changeBaseMap(item.type)"
+    >
       <img :src="item.imgSrc" alt="" />
-      <div class="title">{{ item.title }}</div>
+      <div class="title">
+        {{ item.title }}
+      </div>
     </div>
   </div>
 </template>
@@ -31,6 +38,11 @@ export default {
       ],
     }
   },
+  methods: {
+    changeBaseMap(type) {
+      this.activeType = type
+    },
+  },
 }
 </script>
 
@@ -41,7 +53,14 @@ export default {
   bottom: 50px;
   width: mapTabWidth;
   z-index: 12;
-  border: 1px solid #aaa;
+  // border: 1px solid #aaa;
+
+  .tabItem {
+    position: relative;
+    margin-bottom: 8px;
+    border: 1px solid #eee;
+    cursor: pointer;
+  }
 
   .title {
     position: absolute;
@@ -50,6 +69,13 @@ export default {
     padding: 2px 0;
     width: 100%;
     left: 0;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .active .title {
+    background: #83a1ff;
+    color: #fff;
   }
 }
 </style>
