@@ -38,6 +38,12 @@ export const constantRoutes = [
   },
 
   {
+    path: '/slinge',
+    component: () => import('@/views/fourForm/components/slinge'),
+    hidden: true
+  },
+
+  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
