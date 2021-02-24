@@ -36,13 +36,6 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
-  {
-    path: '/slinge',
-    component: () => import('@/views/fourForm/components/slinge'),
-    hidden: true
-  },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
@@ -60,6 +53,35 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
+  {
+    path: '/slinge',
+    component: Layout,
+    children: [
+      {
+        path: 'slinge',
+        name: 'slinge',
+        component: () => import('@/views/fourForm/components/slinge'),
+        meta: { title: 'slinge', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/slinmultiFamilyge',
+    component: Layout,
+    children: [
+      {
+        path: 'multiFamily',
+        name: 'multiFamily',
+        component: () => import('@/views/fourForm/components/multiFamily'),
+        meta: { title: 'multiFamily', icon: 'form' }
+      }
+    ]
+  },
+  // {
+  //   path: '/slinge',
+  //   component: () => import('@/views/fourForm/components/slinge'),
+  //   hidden: true
+  // },
   {
     path: '/map',
     component: Layout,

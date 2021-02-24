@@ -30,77 +30,46 @@
       </el-form-item>
 
       <el-form-item
-        label="个人姓名"
-        prop="hzxmDHZZL"
+        label="项目名称"
+        prop="filed8ZZL"
         :rules="[
-          { required: true, message: '个人姓名不能为空', trigger: 'blur' },
+          { required: true, message: '项目名称不能为空', trigger: 'blur' },
         ]"
         :label-width="formLabelWidth"
       >
         <el-input
-          ref="hzxmDHZZL"
-          v-model="form.hzxmDHZZL"
-          placeholder="请输入个人姓名"
+          ref="filed8ZZL"
+          v-model="form.filed8ZZL"
+          placeholder="请输入项目名称"
           autocomplete="off"
         ></el-input>
       </el-form-item>
 
       <el-form-item
-        label="个人身份"
-        prop="sfDHZZL"
+        label="单位名称"
+        prop="jsdwmcZZL"
         :rules="[
-          { required: true, message: '个人身份不能为空', trigger: 'blur' },
-        ]"
-        :label-width="formLabelWidth"
-      >
-        <el-checkbox-group v-model="form.sfDHZZL">
-          <el-checkbox label="干部" name="sfDHZZL"></el-checkbox>
-          <el-checkbox label="中共党员" name="sfDHZZL"></el-checkbox>
-          <el-checkbox label="群众" name="sfDHZZL"></el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
-
-      <el-form-item
-        prop="jsqkDHZZL"
-        label="证件号码"
-        :rules="[
-          { required: true, message: '证件号码不能为空', trigger: 'blur' },
+          { required: true, message: '单位名称不能为空', trigger: 'blur' },
         ]"
         :label-width="formLabelWidth"
       >
         <el-input
-          v-model="form.jsqkDHZZL"
-          placeholder="请输入证件号码或‘无’"
+          ref="jsdwmcZZL"
+          v-model="form.jsdwmcZZL"
+          placeholder="请输入单位名称"
           autocomplete="off"
         ></el-input>
       </el-form-item>
 
       <el-form-item
-        prop="sfbccmDHZZL"
-        label="是否本村村民"
-        :rules="[
-          { required: true, message: '是否本村村民不能为空', trigger: 'blur' },
-        ]"
-        :label-width="formLabelWidth"
-      >
-        <el-select v-model="form.sfbccmDHZZL" placeholder="请选择">
-          <!-- <el-option label="请选择" value=""></el-option> -->
-          <el-option label="本村村民" value="本村村民"></el-option>
-          <el-option label="外村村民" value="外村村民"></el-option>
-          <el-option label="城镇居民" value="城镇居民"></el-option>
-          <el-option label="其他" value="其他"></el-option>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item
-        prop="tdqdfsDHZZL"
+        prop="tdqdfsZZL"
         label="土地主要来源"
         :rules="[
           { required: true, message: '土地主要来源不能为空', trigger: 'blur' },
         ]"
         :label-width="formLabelWidth"
       >
-        <el-select v-model="form.tdqdfsDHZZL" placeholder="请选择">
+        <el-select v-model="form.tdqdfsZZL" placeholder="请选择">
           <!-- <el-option label="请选择" value=""></el-option> -->
           <el-option label="承包地" value="承包地"></el-option>
           <el-option label="自留地" value="自留地"></el-option>
@@ -108,32 +77,30 @@
           <el-option label="租赁" value="租赁"></el-option>
           <el-option label="购买" value="购买"></el-option>
           <el-option label="流转" value="流转"></el-option>
-          <el-option label="其他" value="其他"></el-option>
         </el-select>
       </el-form-item>
 
       <el-form-item
-        prop="jfyyDHZZL"
+        prop="jfyyZZL"
         label="建房原因"
         :rules="[
           { required: true, message: '建房原因不能为空', trigger: 'blur' },
         ]"
         :label-width="formLabelWidth"
       >
-        <el-select v-model="form.jfyyDHZZL" placeholder="请选择">
+        <el-select v-model="form.jfyyZZL" placeholder="请选择">
           <!-- <el-option label="请选择" value=""></el-option> -->
           <el-option label="分户" value="分户"></el-option>
           <el-option label="移民搬迁" value="移民搬迁"></el-option>
           <el-option label="异地扶贫搬迁" value="异地扶贫搬迁"></el-option>
           <el-option label="地质灾害搬迁" value="地质灾害搬迁"></el-option>
           <el-option label="生态整治搬迁" value="生态整治搬迁"></el-option>
-          <el-option label="拆迁安置" value="拆迁安置"></el-option>
           <el-option label="其他" value="其他"></el-option>
         </el-select>
       </el-form-item>
 
       <el-form-item
-        prop="kgsjDHZZL"
+        prop="kgsjZZL"
         label="开工时间"
         :rules="[
           { required: true, message: '开工时间不能为空', trigger: 'blur' },
@@ -144,20 +111,20 @@
           type="year"
           :picker-options="pickerOptions0"
           placeholder="请输入开工时间(年份)"
-          v-model="form.kgsjDHZZL"
+          v-model="form.kgsjZZL"
           style="width: 100%"
         ></el-date-picker>
       </el-form-item>
 
       <el-form-item
         label="房屋是否出售"
-        prop="sfczcsDHZZL"
+        prop="sfczcsZZL"
         :label-width="formLabelWidth"
         :rules="[
           { required: true, message: '房屋是否出售不能为空', trigger: 'blur' },
         ]"
       >
-        <el-radio-group v-model="form.sfczcsDHZZL">
+        <el-radio-group v-model="form.sfczcsZZL">
           <el-radio label="否"></el-radio>
           <el-radio label="部分"></el-radio>
           <el-radio label="全部"></el-radio>
@@ -168,57 +135,12 @@
       <hr />
 
       <el-form-item
-        v-show="sffhyhyztjDHZZLTrN"
-        label="是否符合“一户一宅”或符合分户条件但未分户"
-        prop="sffhyhyztjDHZZL"
-        class="lhlabel"
-        :label-width="formLabelWidth"
-        :rules="[
-          {
-            required: sffhyhyztjDHZZLNrF,
-            message: '是否符合“一户一宅”或符合分户条件但未分户不能为空',
-            trigger: 'blur',
-          },
-        ]"
-      >
-        <el-radio-group v-model="form.sffhyhyztjDHZZL">
-          <el-radio label="是"></el-radio>
-          <el-radio label="否"></el-radio>
-        </el-radio-group>
-      </el-form-item>
-
-      <el-form-item
-        prop="filed3DHZZL"
-        v-show="filed3DHZZLTrN"
-        label="一户多宅原因"
-        :rules="[
-          {
-            required: filed3DHZZLTrF,
-            message: '一户多宅原因不能为空',
-            trigger: 'blur',
-          },
-        ]"
-        :label-width="formLabelWidth"
-      >
-        <el-checkbox-group v-model="form.filed3DHZZL">
-          <el-checkbox label="不符合分户条件" name="filed3DHZZL"></el-checkbox>
-          <el-checkbox label="新建未拆旧" name="filed3DHZZL"></el-checkbox>
-          <el-checkbox label="出售后再建" name="filed3DHZZL"></el-checkbox>
-          <el-checkbox label="纯多占" name="filed3DHZZL"></el-checkbox>
-          <el-checkbox label="继承" name="filed3DHZZL"></el-checkbox>
-          <el-checkbox label="赠予" name="filed3DHZZL"></el-checkbox>
-          <el-checkbox label="购买" name="filed3DHZZL"></el-checkbox>
-          <el-checkbox label="其他" name="filed3DHZZL"></el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
-
-      <el-form-item
-        prop="qztdmjDHZZL"
-        label="宗地（项目）总占地面积"
+        prop="xmzytdmjZZL"
+        label="房屋（项目）总占地面积"
         :rules="[
           {
             required: true,
-            message: '宗地（项目）总占地面积不能为空',
+            message: '房屋（项目）总占地面积不能为空',
             trigger: 'blur',
           },
         ]"
@@ -226,8 +148,8 @@
       >
         <el-input
           type="number"
-          v-model.number="form.qztdmjDHZZL"
-          placeholder="请输入宗地（项目）总占地面积"
+          v-model.number="form.xmzytdmjZZL"
+          placeholder="请输入房屋（项目）总占地面积"
           autocomplete="off"
         ></el-input
         >（/平方米）
@@ -235,7 +157,7 @@
       </el-form-item>
 
       <el-form-item
-        prop="zygdmjDHZZL"
+        prop="zygdmjZZL"
         label="占用耕地面积"
         :rules="[
           {
@@ -248,7 +170,7 @@
       >
         <el-input
           type="number"
-          v-model.number="form.zygdmjDHZZL"
+          v-model.number="form.zygdmjZZL"
           placeholder="请输入占用耕地面积"
           autocomplete="off"
         ></el-input
@@ -257,7 +179,7 @@
       </el-form-item>
 
       <el-form-item
-        prop="filed2DHZZL"
+        prop="csZZL"
         label="占用永久基本农田面积"
         :rules="[
           {
@@ -270,7 +192,7 @@
       >
         <el-input
           type="number"
-          v-model.number="form.filed2DHZZL"
+          v-model.number="form.csZZL"
           placeholder="请输入占用永久基本农田面积"
           autocomplete="off"
         ></el-input
@@ -293,7 +215,7 @@
       </el-form-item>
 
       <el-form-item
-        prop="cgbdqgddzjdmjDHZZL"
+        prop="filed2ZZL"
         label="超出本地区宅基地标准面积"
         :rules="[
           {
@@ -306,7 +228,7 @@
       >
         <el-input
           type="number"
-          v-model.number="form.cgbdqgddzjdmjDHZZL"
+          v-model.number="form.filed2ZZL"
           placeholder="请输入超出本地区宅基地标准面积"
           autocomplete="off"
         ></el-input
@@ -326,7 +248,7 @@
       </el-form-item>
 
       <el-form-item
-        prop="filed4DHZZL"
+        prop="filed3ZZL"
         label="占用耕地的主要类型"
         :rules="[
           {
@@ -337,7 +259,7 @@
         ]"
         :label-width="formLabelWidth"
       >
-        <el-select v-model="form.filed4DHZZL" placeholder="请选择">
+        <el-select v-model="form.filed3ZZL" placeholder="请选择">
           <!-- <el-option label="请选择" value=""></el-option> -->
           <el-option label="纯耕地" value="纯耕地"></el-option>
           <el-option
@@ -365,7 +287,7 @@
       </el-form-item>
 
       <el-form-item
-        prop="fhcxczghqkDHZZL"
+        prop="sffhcxghqkZZL"
         label="是否符合城乡（村庄）规划"
         :rules="[
           {
@@ -376,7 +298,7 @@
         ]"
         :label-width="formLabelWidth"
       >
-        <el-select v-model="form.fhcxczghqkDHZZL" placeholder="请选择">
+        <el-select v-model="form.sffhcxghqkZZL" placeholder="请选择">
           <!-- <el-option label="请选择" value=""></el-option> -->
           <el-option label="未编制规划" value="未编制规划"></el-option>
           <el-option label="符合" value="符合"></el-option>
@@ -386,7 +308,7 @@
       </el-form-item>
 
       <el-form-item
-        prop="fhtdlyztghqkDHZZL"
+        prop="sffhtdlyztghqkZZL"
         label="是否符合土地利用 总体规划（国土空间规划）情况"
         :rules="[
           {
@@ -398,7 +320,7 @@
         :label-width="formLabelWidth"
         class="lhlabel"
       >
-        <el-select v-model="form.fhtdlyztghqkDHZZL" placeholder="请选择">
+        <el-select v-model="form.sffhtdlyztghqkZZL" placeholder="请选择">
           <!-- <el-option label="请选择" value=""></el-option> -->
           <el-option label="符合" value="符合"></el-option>
           <el-option label="部分符合" value="部分符合"></el-option>
@@ -407,7 +329,7 @@
       </el-form-item>
 
       <el-form-item
-        prop="filed5DHZZL"
+        prop="filed4ZZL"
         label="用地手续情况"
         :rules="[
           {
@@ -418,7 +340,7 @@
         ]"
         :label-width="formLabelWidth"
       >
-        <el-select v-model="form.filed5DHZZL" placeholder="请选择">
+        <el-select v-model="form.filed4ZZL" placeholder="请选择">
           <!-- <el-option label="请选择" value=""></el-option> -->
           <el-option label="无手续" value="无手续"></el-option>
           <el-option label="手续不全" value="手续不全"></el-option>
@@ -427,7 +349,7 @@
       </el-form-item>
 
       <el-form-item
-        prop="filed6DHZZL"
+        prop="filed5ZZL"
         label="没有合法合规用地手续主要原因"
         :rules="[
           {
@@ -439,7 +361,7 @@
         :label-width="formLabelWidth"
         class="lhlabel"
       >
-        <el-select v-model="form.filed6DHZZL" placeholder="请选择">
+        <el-select v-model="form.filed5ZZL" placeholder="请选择">
           <!-- <el-option label="请选择" value=""></el-option> -->
           <el-option
             label="未申请办理用地手续"
@@ -455,7 +377,7 @@
 
       <el-form-item
         label="是否作出行政处罚"
-        prop="sfbxzcfDHZZL"
+        prop="sfbxzcfZZL"
         :label-width="formLabelWidth"
         :rules="[
           {
@@ -465,110 +387,48 @@
           },
         ]"
       >
-        <el-radio-group v-model="form.sfbxzcfDHZZL">
+        <el-radio-group v-model="form.sfbxzcfZZL">
           <el-radio label="是"></el-radio>
           <el-radio label="否"></el-radio>
         </el-radio-group>
       </el-form-item>
 
       <el-form-item
-        v-show="filed7DHZZLTrN"
+        v-show="filed6ZZLTrN"
         label="是否申请法院强制执行"
-        prop="filed7DHZZL"
+        prop="filed6ZZL"
         :label-width="formLabelWidth"
         :rules="[
           {
-            required: filed7DHZZLTrF,
+            required: filed6ZZLTrF,
             message: '是否申请法院强制执行不能为空',
             trigger: 'blur',
           },
         ]"
       >
-        <el-radio-group v-model="form.filed7DHZZL">
+        <el-radio-group v-model="form.filed6ZZL">
           <el-radio label="是"></el-radio>
           <el-radio label="否"></el-radio>
         </el-radio-group>
       </el-form-item>
 
       <el-form-item
-        v-show="filed8DHZZLTrN"
+        v-show="filed7ZZLTrN"
         label="法院是否受理"
-        prop="filed8DHZZL"
+        prop="filed7ZZL"
         :label-width="formLabelWidth"
         :rules="[
           {
-            required: filed8DHZZLTrF,
+            required: filed7ZZLTrF,
             message: '法院是否受理不能为空',
             trigger: 'blur',
           },
         ]"
       >
-        <el-radio-group v-model="form.filed8DHZZL">
+        <el-radio-group v-model="form.filed7ZZL">
           <el-radio label="是"></el-radio>
           <el-radio label="否"></el-radio>
         </el-radio-group>
-      </el-form-item>
-
-      <el-form-item label="备注" :label-width="formLabelWidth">
-        <el-input
-          type="textarea"
-          v-model="form.xybcsmdqkDHZZL"
-          class="resizeNone"
-        ></el-input>
-      </el-form-item>
-
-      <el-form-item
-        label="照片"
-        :label-width="formLabelWidth"
-        :rules="[
-          {
-            required: true,
-            message: '照片不能为空',
-            trigger: 'blur',
-          },
-        ]"
-      >
-        <el-upload
-          class="upload-demo"
-          action=""
-          :http-request="photoBox"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="imageJson"
-          list-type="picture"
-        >
-          <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">
-            只能上传jpg/png文件，且不超过500kb
-          </div>
-        </el-upload>
-      </el-form-item>
-
-      <el-form-item
-        label="佐证材料"
-        :label-width="formLabelWidth"
-        :rules="[
-          {
-            required: true,
-            message: '佐证材料不能为空',
-            trigger: 'blur',
-          },
-        ]"
-      >
-        <el-upload
-          class="upload-demo"
-          action=""
-          :http-request="photoBoxCL"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fjJson"
-          list-type="picture"
-        >
-          <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">
-            只能上传jpg/png文件，且不超过500kb
-          </div>
-        </el-upload>
       </el-form-item>
 
       <el-form-item :style="{ textAlign: 'center ', padding: '20px' }">
@@ -584,55 +444,37 @@
 <script>
 export default {
   data() {
-    const validateHzxmDHZZL = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
     return {
       form: {
         cun: '',
         group: '',
         doorNum: '',
-        hzxmDHZZL: '',
-        sfDHZZL: [],
-        jsqkDHZZL: '',
+        filed8ZZL: '',
+        jsdwmcZZL: '',
+        tdqdfsZZL: '',
         tdqdfsDHZZL: '',
-        jfyyDHZZL: '',
-        kgsjDHZZL: '',
-        sfczcsDHZZL: '',
-        sffhyhyztjDHZZL: '',
-        filed3DHZZL: [],
-        qztdmjDHZZL: '',
-        zygdmjDHZZL: '',
-        filed2DHZZL: '',
+        jfyyZZL: '',
+        kgsjZZL: '',
+        sfczcsZZL: '',
+        xmzytdmjZZL: '',
+        zygdmjZZL: '',
+        csZZL: '',
         bzarea: '',
-        cgbdqgddzjdmjDHZZL: '',
-        filed4DHZZL: '',
-        fhcxczghqkDHZZL: '',
-        fhtdlyztghqkDHZZL: '',
-        filed5DHZZL: '',
-        filed6DHZZL: '',
-        sfbxzcfDHZZL: '',
-        filed7DHZZL: '',
-        filed8DHZZL: '',
+        filed2ZZL: '',
+        filed3ZZL: '',
+        sffhcxghqkZZL: '',
+        sffhtdlyztghqkZZL: '',
+        filed4ZZL: '',
+        filed5ZZL: '',
+        sfbxzcfZZL: '',
+        filed6ZZL: '',
+        filed7ZZL: '',
       },
-      formRules: {
-        hzxmDHZZL: [
-          // { required: true, trigger: 'blur', validator: validateHzxmDHZZL },
-          { required: true, trigger: 'blur' },
-        ],
-      },
-      sffhyhyztjDHZZLNrF: false,
-      sffhyhyztjDHZZLTrN: false,
-      filed3DHZZLTrF: false,
-      filed3DHZZLTrN: false,
-      filed7DHZZLTrF: false,
-      filed7DHZZLTrN: false,
-      filed8DHZZLTrN: false,
-      filed8DHZZLTrF: false,
+      formRules: {},
+      filed6ZZLTrN: false,
+      filed6ZZLTrF: false,
+      filed7ZZLTrN: false,
+      filed7ZZLTrF: false,
       cgbdqgddzjdmjDHZZLdis: true,
       formLabelWidth: '200px',
       pickerOptions0: {
@@ -640,54 +482,50 @@ export default {
           return time.getTime() > Date.now() - 8.64e6
         },
       },
-      imageJson: [
-        {
-          name: 'food.jpeg',
-          url:
-            'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-        },
-        {
-          name: 'food2.jpeg',
-          url:
-            'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-        },
-      ],
-      fjJson: [],
     }
   },
   watch: {
+    'form.zygdmjZZL': {
+      deep: true,
+      handler(value) {
+        if (value > this.form.xmzytdmjZZL) {
+          this.$message.error('占用耕地面积不得大于房屋（项目）总占地面积')
+        } else {
+        }
+      },
+    },
     form: {
       //深度监听，可监听到对象、数组的变化
       handler(val, oldVal) {
-        if (val.sfbccmDHZZL === '本村村民') {
-          this.sffhyhyztjDHZZLTrN = true
-          this.sffhyhyztjDHZZLNrF = true
-          if (val.sffhyhyztjDHZZL === '否') {
-            this.filed3DHZZLTrN = true
-            this.filed3DHZZLTrF = true
-          } else {
-            this.filed3DHZZLTrN = false
-            this.filed3DHZZLTrF = false
-          }
-        } else {
-          this.sffhyhyztjDHZZLTrN = false
-          this.sffhyhyztjDHZZLNrF = false
-        }
+        // if (val.xmzytdmjZZL) {
+        //   if (val.zygdmjZZL !== oldVal.zygdmjZZL) {
+        //     if (val.zygdmjZZL > val.xmzytdmjZZL) {
+        //       this.$message.error('占用耕地面积不得大于房屋（项目）总占地面积')
+        //     } else {
+        //     }
+        //   } else {
+        //   }
 
-        if (val.sfbxzcfDHZZL === '是') {
-          this.filed7DHZZLTrN = true
-          this.filed7DHZZLTrF = true
-          if (val.filed7DHZZL === '是') {
-            this.filed8DHZZLTrN = true
-            this.filed8DHZZLTrF = true
-          } else {
-            this.filed8DHZZLTrN = false
-            this.filed8DHZZLTrF = false
-          }
-        } else {
-          this.filed7DHZZLTrN = false
-          this.filed7DHZZLTrF = false
-        }
+        //   if (val.csZZL !== oldVal.csZZL) {
+        //     if (val.csZZL > val.xmzytdmjZZL) {
+        //       this.$message.error(
+        //         '占用永久基本农田面积不得大于房屋（项目）总占地面积'
+        //       )
+        //     } else {
+        //     }
+        //   } else {
+        //   }
+
+        //   if (val.filed2ZZL !== oldVal.filed2ZZL) {
+        //     if (val.filed2ZZL >= val.xmzytdmjZZL) {
+        //       this.$message.error(
+        //         '超出本地区宅基地标准面积不得大于或等于 房屋（项目）总占地面积'
+        //       )
+        //     } else {
+        //     }
+        //   } else {
+        //   }
+        // }
 
         if (val.bzarea) {
           this.cgbdqgddzjdmjDHZZLdis = false
@@ -695,56 +533,25 @@ export default {
           this.cgbdqgddzjdmjDHZZLdis = true
         }
 
-        if (val.qztdmjDHZZL) {
-          if (val.qztdmjDHZZL) {
-            if (val.zygdmjDHZZL > val.qztdmjDHZZL) {
-              this.$message.error('占用耕地面积不得大于宗地（项目）总占地面积')
-            } else {
-            }
+        if (val.sfbxzcfZZL == '是') {
+          this.filed6ZZLTrN = true
+          this.filed6ZZLTrF = true
+          if (val.filed6ZZL === '是') {
+            this.filed7ZZLTrN = true
+            this.filed7ZZLTrF = true
           } else {
+            this.filed7ZZLTrN = false
+            this.filed7ZZLTrF = false
           }
-
-          if (val.qztdmjDHZZL) {
-            if (val.filed2DHZZL > val.qztdmjDHZZL) {
-              this.$message.error(
-                '占用永久基本农田面积不得大于宗地（项目）总占地面积'
-              )
-            } else {
-            }
-          } else {
-          }
-
-          if (val.qztdmjDHZZ) {
-            if (val.cgbdqgddzjdmjDHZZL >= val.qztdmjDHZZL) {
-              this.$message.error(
-                '超出本地区宅基地标准面积不得大于或等于 宗地（项目）总占地面积'
-              )
-            } else {
-            }
-          } else {
-          }
+        } else {
+          this.filed6ZZLTrN = false
+          this.filed6ZZLTrF = false
         }
       },
       deep: true, //true 深度监听
     },
   },
   methods: {
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePreview(file) {
-      console.log(file)
-    },
-    photoBox(params) {
-      const file = params.file
-      const forml = new FormData()
-      // 文件对象
-      forml.append('file', file)
-      // 本例子主要要在请求时添加特定属性，所以要用自己方法覆盖默认的action
-      // form.append('clientType', 'xxx')
-      // 项目封装的请求方法，下面做简单介绍
-    },
-    photoBoxCL(params) {},
     onSubmit() {
       this.$refs.form.validate((valid) => {
         if (valid) {
