@@ -61,19 +61,43 @@ export const constantRoutes = [
         path: 'slinge',
         name: 'slinge',
         component: () => import('@/views/fourForm/components/slinge'),
-        meta: { title: 'slinge', icon: 'form' }
+        meta: { title: '单户住宅类', icon: 'form' }
       }
     ]
   },
   {
-    path: '/slinmultiFamilyge',
+    path: '/multiFamily',
     component: Layout,
     children: [
       {
         path: 'multiFamily',
         name: 'multiFamily',
         component: () => import('@/views/fourForm/components/multiFamily'),
-        meta: { title: 'multiFamily', icon: 'form' }
+        meta: { title: '多户住宅类', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/publicService',
+    component: Layout,
+    children: [
+      {
+        path: 'publicService',
+        name: 'publicService',
+        component: () => import('@/views/fourForm/components/publicService'),
+        meta: { title: '公共管理服务类', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/Industry',
+    component: Layout,
+    children: [
+      {
+        path: 'Industry',
+        name: 'Industry',
+        component: () => import('@/views/fourForm/components/Industry'),
+        meta: { title: '产业类', icon: 'form' }
       }
     ]
   },
