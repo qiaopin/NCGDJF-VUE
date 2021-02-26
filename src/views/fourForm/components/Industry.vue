@@ -238,7 +238,6 @@
         <el-input
           type="number"
           v-model.number="form.xmzytdmjCYL"
-          @keyup.native="form.xmzytdmjCYL = checkInputs(form.xmzytdmjCYL)"
           placeholder="请输入项目总占地面积"
           autocomplete="off"
         ></el-input
@@ -249,19 +248,12 @@
       <el-form-item
         prop="zygdmjCYL"
         label="占用耕地面积"
-        :rules="[
-          {
-            required: true,
-            message: '占用耕地面积不能为空',
-            trigger: 'blur',
-          },
-        ]"
+        zygdmjCYL
         :label-width="formLabelWidth"
       >
         <el-input
           type="number"
           v-model.number="form.zygdmjCYL"
-          @keyup.native="form.zygdmjCYL = checkInputs(form.zygdmjCYL)"
           placeholder="请输入占用耕地面积"
           autocomplete="off"
         ></el-input
@@ -272,19 +264,12 @@
       <el-form-item
         prop="filed2CYL"
         label="占用永久基本农田面积"
-        :rules="[
-          {
-            required: true,
-            message: '占用永久基本农田面积不能为空',
-            trigger: 'blur',
-          },
-        ]"
         :label-width="formLabelWidth"
       >
         <el-input
           type="number"
           v-model.number="form.filed2CYL"
-          @keyup.native="form.filed2CYL = checkInputs(form.filed2CYL)"
+          @blur="checkInputs1"
           placeholder="请输入占用永久基本农田面积"
           autocomplete="off"
         ></el-input
@@ -490,6 +475,48 @@
 <script>
 export default {
   data() {
+    const reg = /^\d+.?\d{0,2}$/
+    const xmzytdmjCYLvalidate = (rule, value, callback) => {
+      if (reg.test(value)) {
+        if (value < this.form.zygdmjCYL) {
+          callback(new Error('占用耕地面积不能大于项目总占地面积'))
+        } else if (value < this.form.filed2CYL) {
+          callback(new Error('占用永久基本农田面积不能大于项目总占地面积'))
+        } else {
+          callback()
+        }
+      } else if (value < 0) {
+        callback(new Error('占用永久基本农田面积不能为负数'))
+      } else {
+        callback(new Error('请输入保留小数点后最多两位的小数'))
+      }
+    }
+    const zygdmjCYLvalidate = (rule, value, callback) => {
+      if (reg.test(value)) {
+        if (value > this.form.xmzytdmjCYL) {
+          callback(new Error('占用耕地面积不能大于项目总占地面积'))
+        } else {
+          callback()
+        }
+      } else if (value < 0) {
+        callback(new Error('占用耕地面积不能为负数'))
+      } else {
+        callback(new Error('请输入保留小数点后最多两位的小数'))
+      }
+    }
+    const filed2CYLvalidate = (rule, value, callback) => {
+      if (reg.test(value)) {
+        if (value > this.form.xmzytdmjCYL) {
+          callback(new Error('占用永久基本农田面积不能大于项目总占地面积'))
+        } else {
+          callback()
+        }
+      } else if (value < 0) {
+        callback(new Error('占用永久基本农田面积不能为负数'))
+      } else {
+        callback(new Error('请输入保留小数点后最多两位的小数'))
+      }
+    }
     return {
       form: {
         cun: '',
@@ -517,7 +544,35 @@ export default {
         filed9CYL: '',
         filed10CYL: '',
       },
-      formRules: {},
+      formRules: {
+        xmzytdmjCYL: [
+          {
+            required: true,
+            message: '项目总占地面积不能为空',
+            trigger: 'blur',
+          },
+          //  { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
+          // {
+          //   required: true,
+          //   pattern: /^[\u4e00-\u9fa5_a-zA-Z0-9.·-]+$/,
+          //   message: '姓名不支持特殊字符',
+          //   trigger: 'blur',
+          // },
+          { required: true, trigger: 'blur', validator: xmzytdmjCYLvalidate },
+        ],
+        zygdmjCYL: [
+          { required: true, message: '占用耕地面积不能为空', trigger: 'blur' },
+          { required: true, trigger: 'blur', validator: zygdmjCYLvalidate },
+        ],
+        filed2CYL: [
+          {
+            required: true,
+            message: '占用永久基本农田面积不能为空',
+            trigger: 'blur',
+          },
+          { required: true, trigger: 'blur', validator: filed2CYLvalidate },
+        ],
+      },
       filed6CYLTrN: false,
       filed6CYLTrF: false,
       filed9CYLTrN: false,
@@ -533,6 +588,34 @@ export default {
     }
   },
   watch: {
+    // 'form.xmzytdmjCYL': function (value, oldval) {
+    //   if (value) {
+    //     if (this.form.zygdmjCYL > value) {
+    //       this.$message.error('占用耕地面积不得大于项目总占土地面积')
+    //     } else if (this.form.filed2CYL > value) {
+    //       this.$message.error('占用永久基本农田面积不得大于项目总占土地面积')
+    //     }
+    //   } else {
+    //   }
+    // },
+    // 'form.zygdmjCYL': function (value, oldval) {
+    //   if (this.form.xmzytdmjCYL) {
+    //     if (value > this.form.xmzytdmjCYL) {
+    //       this.$message.error('占用耕地面积不得大于项目总占土地面积')
+    //     } else {
+    //     }
+    //   } else {
+    //   }
+    // },
+    // 'form.filed2CYL': function (value, oldval) {
+    //   if (this.form.xmzytdmjCYL) {
+    //     if (value > this.form.xmzytdmjCYL) {
+    //       this.$message.error('占用永久基本农田面积不得大于项目总占土地面积')
+    //     } else {
+    //     }
+    //   } else {
+    //   }
+    // },
     form: {
       //深度监听，可监听到对象、数组的变化
       handler(val, oldVal) {
@@ -563,17 +646,16 @@ export default {
     },
   },
   methods: {
-    checkInputs(num) {
-      let str = num.toString()
-      let len1 = str.split('.')[1]
+    // @keyup.native="form.zygdmjCYL = checkInputs(form.zygdmjCYL)"
+    checkInputs1(num) {
+      let str = this.form.filed2CYL.toString()
       if (str.indexOf('.') != -1) {
+        let len1 = str.split('.')[1]
         if (len1 > 2) {
-          return Number(str).toFixed(2)
+          this.form.filed2CYL = Number(str).toFixed(2)
         } else {
-          return str
         }
       } else {
-        return str
       }
     },
     onSubmit() {

@@ -137,19 +137,11 @@
       <el-form-item
         prop="xmzytdmjZZL"
         label="房屋（项目）总占地面积"
-        :rules="[
-          {
-            required: true,
-            message: '房屋（项目）总占地面积不能为空',
-            trigger: 'blur',
-          },
-        ]"
         :label-width="formLabelWidth"
       >
         <el-input
           type="number"
           v-model.number="form.xmzytdmjZZL"
-          @keyup.native="form.xmzytdmjZZL = checkInputs(form.xmzytdmjZZL)"
           placeholder="请输入房屋（项目）总占地面积"
           autocomplete="off"
         ></el-input
@@ -160,19 +152,11 @@
       <el-form-item
         prop="zygdmjZZL"
         label="占用耕地面积"
-        :rules="[
-          {
-            required: true,
-            message: '占用耕地面积不能为空',
-            trigger: 'blur',
-          },
-        ]"
         :label-width="formLabelWidth"
       >
         <el-input
           type="number"
           v-model.number="form.zygdmjZZL"
-          @keyup.native="form.zygdmjZZL = checkInputs(form.zygdmjZZL)"
           placeholder="请输入占用耕地面积"
           autocomplete="off"
         ></el-input
@@ -183,19 +167,11 @@
       <el-form-item
         prop="csZZL"
         label="占用永久基本农田面积"
-        :rules="[
-          {
-            required: true,
-            message: '占用永久基本农田面积不能为空',
-            trigger: 'blur',
-          },
-        ]"
         :label-width="formLabelWidth"
       >
         <el-input
           type="number"
           v-model.number="form.csZZL"
-          @keyup.native="form.csZZL = checkInputs(form.csZZL)"
           placeholder="请输入占用永久基本农田面积"
           autocomplete="off"
         ></el-input
@@ -211,7 +187,6 @@
         <el-input
           type="number"
           v-model.number="form.bzarea"
-          @keyup.native="form.bzarea = checkInputs(form.bzarea)"
           placeholder="本地区宅基地标准面积是为计算超出本地区宅基地标准面积，可为空"
           autocomplete="off"
         ></el-input
@@ -221,19 +196,11 @@
       <el-form-item
         prop="filed2ZZL"
         label="超出本地区宅基地标准面积"
-        :rules="[
-          {
-            required: true,
-            message: '超出本地区宅基地标准面积不能为空',
-            trigger: 'blur',
-          },
-        ]"
         :label-width="formLabelWidth"
       >
         <el-input
           type="number"
           v-model.number="form.filed2ZZL"
-          @keyup.native="form.filed2ZZL = checkInputs(form.filed2ZZL)"
           placeholder="请输入超出本地区宅基地标准面积"
           autocomplete="off"
         ></el-input
@@ -450,6 +417,71 @@
 <script>
 export default {
   data() {
+    const reg = /^\d+.?\d{0,2}$/
+    const xmzytdmjZZLvalidate = (rule, value, callback) => {
+      if (reg.test(value)) {
+        if (value < this.form.zygdmjZZL) {
+          callback(new Error('占用耕地面积不能大于房屋（项目）总占地面积'))
+        } else if (value < this.form.csZZL) {
+          callback(
+            new Error('占用永久基本农田面积不能大于房屋（项目）总占地面积')
+          )
+        } else if (value < this.form.filed2ZZL) {
+          callback(
+            new Error('超出本地区宅基地标准面积不能大于房屋（项目）总占地面积')
+          )
+        } else {
+          callback()
+        }
+      } else if (value < 0) {
+        callback(new Error('房屋（项目）总占地面积不能为负数'))
+      } else {
+        callback(new Error('请输入保留小数点后最多两位的小数'))
+      }
+    }
+    const zygdmjZZLvalidate = (rule, value, callback) => {
+      if (reg.test(value)) {
+        if (value > this.form.xmzytdmjZZL) {
+          callback(new Error('占用耕地面积不能大于房屋（项目）总占地面积'))
+        } else {
+          callback()
+        }
+      } else if (value < 0) {
+        callback(new Error('占用耕地面积不能为负数'))
+      } else {
+        callback(new Error('请输入保留小数点后最多两位的小数'))
+      }
+    }
+    const csZZLvalidate = (rule, value, callback) => {
+      if (reg.test(value)) {
+        if (value > this.form.xmzytdmjZZL) {
+          callback(
+            new Error('占用永久基本农田面积不能大于房屋（项目）总占地面积')
+          )
+        } else {
+          callback()
+        }
+      } else if (value < 0) {
+        callback(new Error('占用永久基本农田面积不能为负数'))
+      } else {
+        callback(new Error('请输入保留小数点后最多两位的小数'))
+      }
+    }
+    const filed2ZZLvalidate = (rule, value, callback) => {
+      if (reg.test(value)) {
+        if (value > this.form.xmzytdmjZZL) {
+          callback(
+            new Error('超出本地区宅基地标准面积不能大于房屋（项目）总占地面积')
+          )
+        } else {
+          callback()
+        }
+      } else if (value < 0) {
+        callback(new Error('超出本地区宅基地标准面积不能为负数'))
+      } else {
+        callback(new Error('请输入保留小数点后最多两位的小数'))
+      }
+    }
     return {
       form: {
         cun: '',
@@ -476,7 +508,43 @@ export default {
         filed6ZZL: '',
         filed7ZZL: '',
       },
-      formRules: {},
+      formRules: {
+        xmzytdmjZZL: [
+          {
+            required: true,
+            message: '房屋（项目）总占地面积不能为空',
+            trigger: 'blur',
+          },
+          //  { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
+          // {
+          //   required: true,
+          //   pattern: /^[\u4e00-\u9fa5_a-zA-Z0-9.·-]+$/,
+          //   message: '姓名不支持特殊字符',
+          //   trigger: 'blur',
+          // },
+          { required: true, trigger: 'blur', validator: xmzytdmjZZLvalidate },
+        ],
+        zygdmjZZL: [
+          { required: true, message: '占用耕地面积不能为空', trigger: 'blur' },
+          { required: true, trigger: 'blur', validator: zygdmjZZLvalidate },
+        ],
+        csZZL: [
+          {
+            required: true,
+            message: '占用永久基本农田面积不能为空',
+            trigger: 'blur',
+          },
+          { required: true, trigger: 'blur', validator: csZZLvalidate },
+        ],
+        filed2ZZL: [
+          {
+            required: true,
+            message: '超出本地区宅基地标准面积不能为空',
+            trigger: 'blur',
+          },
+          { required: true, trigger: 'blur', validator: filed2ZZLvalidate },
+        ],
+      },
       filed6ZZLTrN: false,
       filed6ZZLTrF: false,
       filed7ZZLTrN: false,
@@ -491,97 +559,58 @@ export default {
     }
   },
   watch: {
-    'form.xmzytdmjZZL': {
-      deep: true,
-      handler(value) {
-        if (value) {
-          if (this.form.zygdmjZZL > value) {
-            this.$message.error('占用耕地面积不得大于房屋（项目）总占地面积')
-          } else if (this.form.csZZL > value) {
-            this.$message.error(
-              '占用永久基本农田面积不得大于房屋（项目）总占地面积'
-            )
-          } else if (this.form.filed2ZZL > value) {
-            this.$message.error(
-              '超出本地区宅基地标准面积不得大于或等于 房屋（项目）总占地面积'
-            )
-          } else {
-          }
-        } else {
-        }
-      },
-    },
-    'form.zygdmjZZL': {
-      deep: true,
-      handler(value) {
-        if (this.form.xmzytdmjZZL) {
-          if (value > this.form.xmzytdmjZZL) {
-            this.$message.error('占用耕地面积不得大于房屋（项目）总占地面积')
-          } else {
-          }
-        } else {
-        }
-      },
-    },
-    'form.csZZL': {
-      deep: true,
-      handler(value) {
-        if (this.form.xmzytdmjZZL) {
-          if (value > this.form.xmzytdmjZZL) {
-            this.$message.error(
-              '占用永久基本农田面积不得大于房屋（项目）总占地面积'
-            )
-          } else {
-          }
-        }
-      },
-    },
-    'form.filed2ZZL': {
-      deep: true,
-      handler(value) {
-        if (this.form.xmzytdmjZZL) {
-          if (value >= this.form.xmzytdmjZZL) {
-            this.$message.error(
-              '超出本地区宅基地标准面积不得大于或等于 房屋（项目）总占地面积'
-            )
-          } else {
-          }
-        }
-      },
-    },
+    // 'form.xmzytdmjZZL': function (value, oldval) {
+    //   if (value) {
+    //     if (this.form.zygdmjZZL > value) {
+    //       this.$message.error('占用耕地面积不得大于房屋（项目）总占地面积')
+    //     } else if (this.form.csZZL > value) {
+    //       this.$message.error(
+    //         '占用永久基本农田面积不得大于房屋（项目）总占地面积'
+    //       )
+    //     } else if (this.form.filed2ZZL > value) {
+    //       this.$message.error(
+    //         '超出本地区宅基地标准面积不得大于或等于 房屋（项目）总占地面积'
+    //       )
+    //     } else {
+    //     }
+    //   } else {
+    //   }
+    // },
+    // 'form.zygdmjZZL': function (value, oldval) {
+    //   if (this.form.xmzytdmjZZL) {
+    //     if (value > this.form.xmzytdmjZZL) {
+    //       this.$message.error('占用耕地面积不得大于房屋（项目）总占地面积')
+    //     } else {
+    //     }
+    //   } else {
+    //   }
+    // },
+    // 'form.csZZL': function (value, oldval) {
+    //   if (this.form.xmzytdmjZZL) {
+    //     if (value > this.form.xmzytdmjZZL) {
+    //       this.$message.error(
+    //         '占用永久基本农田面积不得大于房屋（项目）总占地面积'
+    //       )
+    //     } else {
+    //     }
+    //   }
+    // },
+    // 'form.filed2ZZL': {
+    //   deep: true,
+    //   handler(value) {
+    //     if (this.form.xmzytdmjZZL) {
+    //       if (value >= this.form.xmzytdmjZZL) {
+    //         this.$message.error(
+    //           '超出本地区宅基地标准面积不得大于或等于 房屋（项目）总占地面积'
+    //         )
+    //       } else {
+    //       }
+    //     }
+    //   },
+    // },
     form: {
       //深度监听，可监听到对象、数组的变化
       handler(val, oldVal) {
-        // if (val.xmzytdmjZZL) {
-        //   if (val.zygdmjZZL !== oldVal.zygdmjZZL) {
-        //     if (val.zygdmjZZL > val.xmzytdmjZZL) {
-        //       this.$message.error('占用耕地面积不得大于房屋（项目）总占地面积')
-        //     } else {
-        //     }
-        //   } else {
-        //   }
-
-        //   if (val.csZZL !== oldVal.csZZL) {
-        //     if (val.csZZL > val.xmzytdmjZZL) {
-        //       this.$message.error(
-        //         '占用永久基本农田面积不得大于房屋（项目）总占地面积'
-        //       )
-        //     } else {
-        //     }
-        //   } else {
-        //   }
-
-        //   if (val.filed2ZZL !== oldVal.filed2ZZL) {
-        //     if (val.filed2ZZL >= val.xmzytdmjZZL) {
-        //       this.$message.error(
-        //         '超出本地区宅基地标准面积不得大于或等于 房屋（项目）总占地面积'
-        //       )
-        //     } else {
-        //     }
-        //   } else {
-        //   }
-        // }
-
         if (val.bzarea) {
           this.cgbdqgddzjdmjDHZZLdis = false
         } else {
@@ -607,6 +636,7 @@ export default {
     },
   },
   methods: {
+    // @keyup.native="form.xmzytdmjZZL = checkInputs(form.xmzytdmjZZL)"
     checkInputs(num) {
       let str = num.toString()
       let len1 = str.split('.')[1]

@@ -253,7 +253,6 @@
         <el-input
           type="number"
           v-model.number="form.xmzytdmjGGFWL"
-          @keyup.native="form.xmzytdmjGGFWL = checkInputs(form.xmzytdmjGGFWL)"
           placeholder="请输入项目总占地面积"
           autocomplete="off"
         ></el-input
@@ -264,19 +263,11 @@
       <el-form-item
         prop="qzzygdmjGGFWL"
         label="占用耕地面积"
-        :rules="[
-          {
-            required: true,
-            message: '占用耕地面积不能为空',
-            trigger: 'blur',
-          },
-        ]"
         :label-width="formLabelWidth"
       >
         <el-input
           type="number"
           v-model.number="form.qzzygdmjGGFWL"
-          @keyup.native="form.qzzygdmjGGFWL = checkInputs(form.qzzygdmjGGFWL)"
           placeholder="请输入占用耕地面积"
           autocomplete="off"
         ></el-input
@@ -287,19 +278,11 @@
       <el-form-item
         prop="filed2GGFWL"
         label="占用永久基本农田面积"
-        :rules="[
-          {
-            required: true,
-            message: '占用永久基本农田面积不能为空',
-            trigger: 'blur',
-          },
-        ]"
         :label-width="formLabelWidth"
       >
         <el-input
           type="number"
           v-model.number="form.filed2GGFWL"
-          @keyup.native="form.filed2GGFWL = checkInputs(form.filed2GGFWL)"
           placeholder="请输入占用永久基本农田面积"
           autocomplete="off"
         ></el-input
@@ -310,13 +293,6 @@
       <el-form-item
         prop="filed6GGFWL"
         label="占用耕地的主要类型"
-        :rules="[
-          {
-            required: true,
-            message: '占用耕地的主要类型不能为空',
-            trigger: 'blur',
-          },
-        ]"
         :label-width="formLabelWidth"
       >
         <el-select v-model="form.filed6GGFWL" placeholder="请选择">
@@ -505,6 +481,48 @@
 <script>
 export default {
   data() {
+    const reg = /^\d+.?\d{0,2}$/
+    const xmzytdmjGGFWLvalidate = (rule, value, callback) => {
+      if (reg.test(value)) {
+        if (value < this.form.qzzygdmjGGFWL) {
+          callback(new Error('占用耕地面积不能大于项目总占地面积'))
+        } else if (value < this.form.filed2GGFWL) {
+          callback(new Error('占用永久基本农田面积不能大于项目总占地面积'))
+        } else {
+          callback()
+        }
+      } else if (value < 0) {
+        callback(new Error('项目总占地面积不能为负数'))
+      } else {
+        callback(new Error('请输入保留小数点后最多两位的小数'))
+      }
+    }
+    const qzzygdmjGGFWLvalidate = (rule, value, callback) => {
+      if (reg.test(value)) {
+        if (value > this.form.xmzytdmjGGFWL) {
+          callback(new Error('占用耕地面积不能大于项目总占地面积'))
+        } else {
+          callback()
+        }
+      } else if (value < 0) {
+        callback(new Error('占用耕地面积不能为负数'))
+      } else {
+        callback(new Error('请输入保留小数点后最多两位的小数'))
+      }
+    }
+    const filed2GGFWLvalidate = (rule, value, callback) => {
+      if (reg.test(value)) {
+        if (value > this.form.xmzytdmjGGFWL) {
+          callback(new Error('占用永久基本农田面积不能大于项目总占地面积'))
+        } else {
+          callback()
+        }
+      } else if (value < 0) {
+        callback(new Error('占用永久基本农田面积不能为负数'))
+      } else {
+        callback(new Error('请输入保留小数点后最多两位的小数'))
+      }
+    }
     return {
       form: {
         cun: '',
@@ -531,13 +549,41 @@ export default {
         filed9GGFWL: '',
         filed10GGFWL: '',
       },
+      formRules: {
+        xmzytdmjGGFWL: [
+          {
+            required: true,
+            message: '项目总占地面积不能为空',
+            trigger: 'blur',
+          },
+          //  { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
+          // {
+          //   required: true,
+          //   pattern: /^[\u4e00-\u9fa5_a-zA-Z0-9.·-]+$/,
+          //   message: '姓名不支持特殊字符',
+          //   trigger: 'blur',
+          // },
+          { required: true, trigger: 'blur', validator: xmzytdmjGGFWLvalidate },
+        ],
+        qzzygdmjGGFWL: [
+          { required: true, message: '占用耕地面积不能为空', trigger: 'blur' },
+          { required: true, trigger: 'blur', validator: qzzygdmjGGFWLvalidate },
+        ],
+        filed2GGFWL: [
+          {
+            required: true,
+            message: '占用永久基本农田面积不能为空',
+            trigger: 'blur',
+          },
+          { required: true, trigger: 'blur', validator: filed2GGFWLvalidate },
+        ],
+      },
       filed4GGFWLTrN: false,
       filed4GGFWLTrF: false,
       filed9GGFWLTrN: false,
       filed9GGFWLTrF: false,
       filed10GGFWLTrN: false,
       filed10GGFWLTrF: false,
-      formRules: {},
       formLabelWidth: '200px',
       pickerOptions0: {
         disabledDate(time) {
@@ -547,6 +593,34 @@ export default {
     }
   },
   watch: {
+    // 'form.xmzytdmjGGFWL': function (value, oldval) {
+    //   if (value) {
+    //     if (this.form.qzzygdmjGGFWL > value) {
+    //       this.$message.error('占用耕地面积不得大于项目总占土地面积')
+    //     } else if (this.form.filed2GGFWL > value) {
+    //       this.$message.error('占用永久基本农田面积不得大于项目总占土地面积')
+    //     }
+    //   } else {
+    //   }
+    // },
+    // 'form.qzzygdmjGGFWL': function (value, oldval) {
+    //   if (this.form.xmzytdmjGGFWL) {
+    //     if (value > this.form.xmzytdmjGGFWL) {
+    //       this.$message.error('占用耕地面积不得大于项目总占土地面积')
+    //     } else {
+    //     }
+    //   } else {
+    //   }
+    // },
+    // 'form.filed2GGFWL': function (value, oldval) {
+    //   if (this.form.xmzytdmjGGFWL) {
+    //     if (value > this.form.xmzytdmjGGFWL) {
+    //       this.$message.error('占用永久基本农田面积不得大于项目总占土地面积')
+    //     } else {
+    //     }
+    //   } else {
+    //   }
+    // },
     form: {
       //深度监听，可监听到对象、数组的变化
       handler(val, oldVal) {
@@ -577,6 +651,7 @@ export default {
     },
   },
   methods: {
+    //  @keyup.native="form.filed2GGFWL = checkInputs(form.filed2GGFWL)"
     checkInputs(num) {
       let str = num.toString()
       let len1 = str.split('.')[1]

@@ -220,7 +220,6 @@
         <el-input
           type="number"
           v-model.number="form.qztdmjDHZZL"
-          @keyup.native="form.qztdmjDHZZL = checkInputs(form.qztdmjDHZZL)"
           placeholder="请输入宗地（项目）总占地面积"
           autocomplete="off"
         ></el-input
@@ -243,7 +242,6 @@
         <el-input
           type="number"
           v-model.number="form.zygdmjDHZZL"
-          @keyup.native="form.zygdmjDHZZL = checkInputs(form.zygdmjDHZZL)"
           placeholder="请输入占用耕地面积"
           autocomplete="off"
         ></el-input
@@ -266,7 +264,6 @@
         <el-input
           type="number"
           v-model.number="form.filed2DHZZL"
-          @keyup.native="form.filed2DHZZL = checkInputs(form.filed2DHZZL)"
           placeholder="请输入占用永久基本农田面积"
           autocomplete="off"
         ></el-input
@@ -282,7 +279,6 @@
         <el-input
           type="number"
           v-model.number="form.bzarea"
-          @keyup.native="form.bzarea = checkInputs(form.bzarea)"
           placeholder="本地区宅基地标准面积是为计算超出本地区宅基地标准面积，可为空"
           autocomplete="off"
         ></el-input
@@ -304,9 +300,6 @@
         <el-input
           type="number"
           v-model.number="form.cgbdqgddzjdmjDHZZL"
-          @keyup.native="
-            form.cgbdqgddzjdmjDHZZL = checkInputs(form.cgbdqgddzjdmjDHZZL)
-          "
           placeholder="请输入超出本地区宅基地标准面积"
           autocomplete="off"
         ></el-input
@@ -585,11 +578,69 @@
 <script>
 export default {
   data() {
-    const validateQztdmjDHZZL = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error('宗地（项目）总占地面积不能为空'))
+    const reg = /^\d+.?\d{0,2}$/
+    const qztdmjDHZZLvalidate = (rule, value, callback) => {
+      if (reg.test(value)) {
+        if (value < this.form.zygdmjDHZZL) {
+          callback(new Error('占用耕地面积不能大于宗地（项目）总占地面积'))
+        } else if (value < this.filed2DHZZL) {
+          callback(
+            new Error('占用永久基本农田面积不能大于宗地（项目）总占地面积')
+          )
+        } else if (value < this.form.cgbdqgddzjdmjDHZZL) {
+          callback(
+            new Error('超出本地区宅基地标准面积不能大于宗地（项目）总占地面积')
+          )
+        } else {
+          callback()
+        }
+      } else if (value < 0) {
+        callback(new Error('宗地（项目）总占地面积不能为负数'))
       } else {
-        callback()
+        callback(new Error('请输入保留小数点后最多两位的小数'))
+      }
+    }
+    const zygdmjDHZZLvalidate = (rule, value, callback) => {
+      if (reg.test(value)) {
+        if (value > this.form.qztdmjDHZZL) {
+          callback(new Error('占用耕地面积不能大于宗地（项目）总占地面积'))
+        } else {
+          callback()
+        }
+      } else if (value < 0) {
+        callback(new Error('占用耕地面积不能为负数'))
+      } else {
+        callback(new Error('请输入保留小数点后最多两位的小数'))
+      }
+    }
+    const filed2DHZZLvalidate = (rule, value, callback) => {
+      if (reg.test(value)) {
+        if (value > this.form.qztdmjDHZZL) {
+          callback(
+            new Error('占用永久基本农田面积不能大于宗地（项目）总占地面积')
+          )
+        } else {
+          callback()
+        }
+      } else if (value < 0) {
+        callback(new Error('占用永久基本农田面积不能为负数'))
+      } else {
+        callback(new Error('请输入保留小数点后最多两位的小数'))
+      }
+    }
+    const cgbdqgddzjdmjDHZZLvalidate = (rule, value, callback) => {
+      if (reg.test(value)) {
+        if (value > this.form.qztdmjDHZZL) {
+          callback(
+            new Error('超出本地区宅基地标准面积不能大于宗地（项目）总占地面积')
+          )
+        } else {
+          callback()
+        }
+      } else if (value < 0) {
+        callback(new Error('超出本地区宅基地标准面积不能为负数'))
+      } else {
+        callback(new Error('请输入保留小数点后最多两位的小数'))
       }
     }
 
@@ -623,7 +674,43 @@ export default {
       },
       formRules: {
         qztdmjDHZZL: [
-          { required: true, trigger: 'blur', validator: validateQztdmjDHZZL },
+          {
+            required: true,
+            message: '宗地（项目）总占地面积不能为空',
+            trigger: 'blur',
+          },
+          //  { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
+          // {
+          //   required: true,
+          //   pattern: /^[\u4e00-\u9fa5_a-zA-Z0-9.·-]+$/,
+          //   message: '姓名不支持特殊字符',
+          //   trigger: 'blur',
+          // },
+          { required: true, trigger: 'blur', validator: qztdmjDHZZLvalidate },
+        ],
+        zygdmjDHZZL: [
+          { required: true, message: '占用耕地面积不能为空', trigger: 'blur' },
+          { required: true, trigger: 'blur', validator: zygdmjDHZZLvalidate },
+        ],
+        filed2DHZZL: [
+          {
+            required: true,
+            message: '占用永久基本农田面积不能为空',
+            trigger: 'blur',
+          },
+          { required: true, trigger: 'blur', validator: filed2DHZZLvalidate },
+        ],
+        cgbdqgddzjdmjDHZZL: [
+          {
+            required: true,
+            message: '超出本地区宅基地标准面积不能为空',
+            trigger: 'blur',
+          },
+          {
+            required: true,
+            trigger: 'blur',
+            validator: cgbdqgddzjdmjDHZZLvalidate,
+          },
         ],
       },
       sffhyhyztjDHZZLNrF: false,
@@ -657,65 +744,53 @@ export default {
     }
   },
   watch: {
-    'form.qztdmjDHZZL': {
-      deep: true,
-      handler(value) {
-        if (value >= 0) {
-          if (this.form.zygdmjDHZZL > value) {
-            this.$message.error('占用耕地面积不得大于宗地（项目）总占地面积')
-          } else if (this.form.filed2DHZZL > value) {
-            this.$message.error(
-              '占用永久基本农田面积不得大于宗地（项目）总占地面积'
-            )
-          } else if (this.form.cgbdqgddzjdmjDHZZL > value) {
-            this.$message.error(
-              '超出本地区宅基地标准面积不得大于或等于 宗地（项目）总占地面积'
-            )
-          } else {
-          }
-        } else {
-          this.$message.error('宗地（项目）总占地面积不能小于0')
-        }
-      },
-    },
-    'form.zygdmjDHZZL': {
-      deep: true,
-      handler(value) {
-        if (this.form.qztdmjDHZZL) {
-          if (value > this.form.qztdmjDHZZL) {
-            this.$message.error('占用耕地面积不得大于房屋（项目）总占地面积')
-          } else {
-          }
-        } else {
-        }
-      },
-    },
-    'form.filed2DHZZL': {
-      deep: true,
-      handler(value) {
-        if (this.form.qztdmjDHZZL) {
-          if (value > this.form.qztdmjDHZZL) {
-            this.$message.error(
-              '占用永久基本农田面积不得大于房屋（项目）总占地面积'
-            )
-          } else {
-          }
-        }
-      },
-    },
-    'form.cgbdqgddzjdmjDHZZL': {
-      deep: true,
-      handler(value) {
-        if (this.form.qztdmjDHZZL) {
-          if (value >= this.form.qztdmjDHZZL) {
-            this.$message.error(
-              '超出本地区宅基地标准面积不得大于或等于 房屋（项目）总占地面积'
-            )
-          } else {
-          }
-        }
-      },
-    },
+    // 'form.qztdmjDHZZL': function (value, oldval) {
+    //   if (value >= 0) {
+    //     if (this.form.zygdmjDHZZL > value) {
+    //       this.$message.error('占用耕地面积不得大于宗地（项目）总占地面积')
+    //     } else if (this.form.filed2DHZZL > value) {
+    //       this.$message.error(
+    //         '占用永久基本农田面积不得大于宗地（项目）总占地面积'
+    //       )
+    //     } else if (this.form.cgbdqgddzjdmjDHZZL > value) {
+    //       this.$message.error(
+    //         '超出本地区宅基地标准面积不得大于或等于 宗地（项目）总占地面积'
+    //       )
+    //     } else {
+    //     }
+    //   } else {
+    //     this.$message.error('宗地（项目）总占地面积不能小于0')
+    //   }
+    // },
+    // 'form.zygdmjDHZZL': function (value, oldval) {
+    //   if (this.form.qztdmjDHZZL) {
+    //     if (value > this.form.qztdmjDHZZL) {
+    //       this.$message.error('占用耕地面积不得大于房屋（项目）总占地面积')
+    //     } else {
+    //     }
+    //   } else {
+    //   }
+    // },
+    // 'form.filed2DHZZL': function (value, oldval) {
+    //   if (this.form.qztdmjDHZZL) {
+    //     if (value > this.form.qztdmjDHZZL) {
+    //       this.$message.error(
+    //         '占用永久基本农田面积不得大于房屋（项目）总占地面积'
+    //       )
+    //     } else {
+    //     }
+    //   }
+    // },
+    // 'form.cgbdqgddzjdmjDHZZL': function (value, oldval) {
+    //   if (this.form.qztdmjDHZZL) {
+    //     if (value >= this.form.qztdmjDHZZL) {
+    //       this.$message.error(
+    //         '超出本地区宅基地标准面积不得大于或等于 房屋（项目）总占地面积'
+    //       )
+    //     } else {
+    //     }
+    //   }
+    // },
     form: {
       //深度监听，可监听到对象、数组的变化
       handler(val, oldVal) {
@@ -790,6 +865,7 @@ export default {
   },
   filters: {},
   methods: {
+    //  @keyup.native="form.qztdmjDHZZL = checkInputs(form.qztdmjDHZZL)"
     checkInputs(num) {
       let str = num.toString()
       let len1 = str.split('.')[1]
