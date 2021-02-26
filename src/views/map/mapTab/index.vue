@@ -1,7 +1,9 @@
 <template>
   <div class="mapTab">
     <div
-      :class="item.type == activeType ? 'active tabItem' : 'tabItem'"
+      :class="
+        item.type == $store.getters.mapType ? 'active tabItem' : 'tabItem'
+      "
       v-for="(item, index) in mapTabArr"
       :key="index"
       @click="changeBaseMap(item.type)"
@@ -20,7 +22,6 @@
 export default {
   data() {
     return {
-      activeType: 'sl',
       mapTabArr: [
         {
           imgSrc: require('../../../assets/images/mapTab/ditu.jpg'),
@@ -40,10 +41,11 @@ export default {
       ],
     }
   },
+  mounted() {},
+  watch: {},
   methods: {
     changeBaseMap(type) {
       this.$store.commit('SET_MAPTYPE', type)
-      this.activeType = type
     },
   },
 }
