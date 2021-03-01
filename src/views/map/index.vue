@@ -14,7 +14,7 @@
     </el-button-group>
 
     <mapTab />
-    <tcgl />
+    <tcgl ref="tcglRef"></tcgl>
     <div id="mouse-position"></div>
   </div>
 </template>
@@ -48,9 +48,21 @@ export default {
     var that = this
     that.lightVector = that.layerManager.lightVector
 
-    //县界
-    var xianjie = new NULAYER(this.layerManager.nuLayers.xianjie)
+    var nlayers = this.layerManager.nuLayers
+    var tcArr = []
+    for (let key in nlayers) {
+      let val = nlayers[key]
+      val.isShow = true
+      tcArr.push(val)
+      this.$refs.tcglRef.getTCArr(tcArr)
+    }
+
+    //县界图层
+    var xianjie = new NULAYER(nlayers.xianjie)
     this.mapObject.addLayer(xianjie)
+    //宗地图层
+    this.ylVector = new NULAYER(nlayers.ylVector)
+    this.mapObject.addLayer(this.ylVector)
 
     var map = this.mapObject
     map.on('singleclick', (e) => {
@@ -113,7 +125,6 @@ export default {
         console.log(JSON.stringify(clickRes))
       }
     })
-    this.initZDLayer()
   },
   computed: {
     getMapType() {
@@ -129,11 +140,6 @@ export default {
     },
   },
   methods: {
-    initZDLayer() {
-      // TODO 宗地图斑
-      this.ylVector = new NULAYER(this.layerManager.nuLayers.ylVector)
-      this.mapObject.addLayer(this.ylVector)
-    },
     //新增宗地
     addZD() {
       var that = this
@@ -167,6 +173,15 @@ export default {
           console.log(geometry)
         }
       )
+    },
+    toggleLayerById(layerId, visible) {
+      console.log(layerId, visible)
+      var layer = this.layerManager.getLayerByLayerId(layerId)
+      try {
+        layer.setVisible(visible)
+      } catch (error) {
+        console.log(error)
+      }
     },
   },
 }

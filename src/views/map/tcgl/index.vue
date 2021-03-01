@@ -1,40 +1,40 @@
 <template>
   <div class="tcBox">
-    <div class="tabItem" v-for="(item, index) in tcArr" :key="index">
-      {{ item.title }}
-      <el-switch v-model="item.isShow" @change="toggleTC($event, index)">
-      </el-switch>
+    <div
+      class="tabItem"
+      v-show="tcArr.length > 0"
+      v-for="(item, index) in tcArr"
+      :key="index"
+    >
+      {{ item.layerName }}
+      <el-switch
+        v-model="item.isShow"
+        @change="toggleTC($event, index)"
+      ></el-switch>
     </div>
   </div>
 </template>
 
 <script>
-// import store from '@/store'
-
 export default {
   data() {
     return {
-      tcArr: [
-        {
-          title: '宗地图层',
-          isShow: true,
-        },
-        {
-          title: '房屋图层',
-          isShow: true,
-        },
-        {
-          title: '疑似图斑',
-          isShow: true,
-        },
-      ],
+      tcArr: [],
     }
   },
   mounted() {},
   watch: {},
   methods: {
+    getTCArr: function (ptcArr) {
+      this.tcArr = JSON.parse(JSON.stringify(ptcArr))
+      //   ptcArr.forEach((element, index) => {
+      //     this.tcArr[index].layerName = element.layerName
+      //     this.tcArr[index].isShow = element.isShow
+      //   })
+    },
     toggleTC: function ($event, index) {
-      console.log(index, $event)
+      var layerId = this.tcArr[index].layerId
+      this.$parent.toggleLayerById(layerId, $event)
     },
   },
 }
@@ -47,7 +47,7 @@ export default {
   top: 15px;
   z-index: 12;
   width: 130px;
-  border: 1px solid #eee;
+  //   border: 1px solid #eee;
 
   .tabItem {
     margin-bottom: 5px;

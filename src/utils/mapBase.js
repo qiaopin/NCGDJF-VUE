@@ -64,7 +64,7 @@ export function LAYERMANAGER(target, center, zoom) {
             layerId: 'xianjie',
             layerUrl:
                 'http://110.249.159.162:9997/arcgis/rest/services/NCGDJF/HCFW130000/MapServer',
-            layerName: 'xianjie',
+            layerName: '县界',
             opacity: 0.3,
             zIndex: 1,
         },
@@ -138,6 +138,22 @@ export function LAYERMANAGER(target, center, zoom) {
             return style;
         }
     });
+
+    //根据layerId获取map图层
+    that.getLayerByLayerId = function (layerId) {
+        var layers = that.mapObject.getLayers();
+        var layer = null;
+        layers.forEach((item) => {
+            var isBaseMap = item.get("isBaseMap");
+            if (!isBaseMap) {
+                if (layerId == item.get('id')) {
+                    layer = item;
+                    return false;
+                }
+            }
+        })
+        return layer;
+    }
 
     //切换底图
     that.changeBaseMap = function (type) {
