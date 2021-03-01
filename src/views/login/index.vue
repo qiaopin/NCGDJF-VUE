@@ -206,6 +206,16 @@ $cursor: #fff;
   }
 }
 
+.el-dialog {
+  .el-dialog__body {
+    //border-top: 1px solid #dcdfe6;
+    //border-bottom: 1px solid #dcdfe6;
+    max-height: 500px !important;
+    min-height: 100px;
+    overflow-y: auto;
+  }
+}
+
 /* reset element-ui css */
 .login-container {
   .el-input {
@@ -244,7 +254,7 @@ $cursor: #fff;
 }
 
 .openLay {
-  width: 60%;
+  width: 70%;
   margin: 0 auto;
 
   .FPForm {

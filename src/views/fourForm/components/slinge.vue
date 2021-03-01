@@ -230,13 +230,6 @@
       <el-form-item
         prop="zygdmjDHZZL"
         label="占用耕地面积"
-        :rules="[
-          {
-            required: true,
-            message: '占用耕地面积不能为空',
-            trigger: 'blur',
-          },
-        ]"
         :label-width="formLabelWidth"
       >
         <el-input
@@ -252,13 +245,6 @@
       <el-form-item
         prop="filed2DHZZL"
         label="占用永久基本农田面积"
-        :rules="[
-          {
-            required: true,
-            message: '占用永久基本农田面积不能为空',
-            trigger: 'blur',
-          },
-        ]"
         :label-width="formLabelWidth"
       >
         <el-input
@@ -288,13 +274,6 @@
       <el-form-item
         prop="cgbdqgddzjdmjDHZZL"
         label="超出本地区宅基地标准面积"
-        :rules="[
-          {
-            required: true,
-            message: '超出本地区宅基地标准面积不能为空',
-            trigger: 'blur',
-          },
-        ]"
         :label-width="formLabelWidth"
       >
         <el-input
@@ -306,7 +285,7 @@
         >（/平方米）
         <el-tooltip
           effect="dark"
-          content="请填写本地区宅基地标准面积"
+          content="请先填写本地区宅基地标准面积再进行分析"
           placement="top-start"
         >
           <el-button

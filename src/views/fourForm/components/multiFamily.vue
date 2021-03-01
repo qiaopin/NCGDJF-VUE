@@ -207,7 +207,7 @@
         >（/平方米）
         <el-tooltip
           effect="dark"
-          content="请填写本地区宅基地标准面积"
+          content="请先填写本地区宅基地标准面积再进行分析"
           placement="top-start"
         >
           <el-button
