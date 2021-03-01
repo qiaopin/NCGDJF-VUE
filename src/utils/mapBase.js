@@ -12,6 +12,7 @@ import olstyleText from "ol/style/Text";
 import olstyleFill from "ol/style/Fill";
 import olstyleStroke from "ol/style/Stroke";
 import Draw from "ol/interaction/Draw";
+import olModify from 'ol/interaction/Modify'
 import { get as getProjection } from "ol/proj";
 import { getWidth, getTopLeft } from "ol/extent";
 import View from "ol/View";
@@ -28,14 +29,6 @@ import { createStringXY } from "ol/coordinate";
 import { Message } from 'element-ui';
 import _this from '../main'
 
-var arcgisMaplayer = new TileLayer({
-    source: new TileArcGISRest({
-        params: { 'LAYERS': 'show:0' },
-        projection: "EPSG:4326",
-        url: "http://110.249.159.162:9997/arcgis/rest/services/NCGDJF/HCFW130000/MapServer"
-    }),
-    opacity: 0.3
-});
 
 export function LAYERMANAGER(target, center, zoom) {
     var that = this;
@@ -43,7 +36,87 @@ export function LAYERMANAGER(target, center, zoom) {
     var center = center || [116.0, 39.0];
     var zoom = zoom || 7;
 
+    //地图对象
     that.mapObject = null;
+    //编辑工具
+    that.modify = null;
+    //当前编辑图层
+    that.modifySource = null;
+    //编辑过程元素
+    that.undoStack = [];
+
+    var TBColors = {
+        WTB_SCOLOR: '#ccb0c0', //伪图斑
+        WTB_FCOLOR: 'rgba(204, 176, 192,0.7)',
+
+        YL_YDC_SCOLOR: '#177BD0', //宗地已调查
+        YL_YZC_SCOLOR: '#15ca8f', //宗地已暂存
+        // YL_YDC_FCOLOR:"#ffcc33",
+        YL_WDC_SCOLOR: '#ffcc33', //宗地未调查
+        // YL_WDC_FCOLOR:"#ffcc33",
+        YS_SCOLOR: '#ff0000', //疑似图斑
+        CUN_SCOLOR: '#000000', //村界
+        CUN_FCOLOR: 'rgba(0,0,0,.1)', //村界
+    }
+    //项目中需要加载的图层
+    that.nuLayers = {
+        xianjie: {
+            layerId: 'xianjie',
+            layerUrl:
+                'http://110.249.159.162:9997/arcgis/rest/services/NCGDJF/HCFW130000/MapServer',
+            layerName: 'xianjie',
+            opacity: 0.3,
+            zIndex: 1,
+        },
+        ylVector: {
+            layerId: 'ylVector',
+            layerName: '宗地',
+            layerType: 'vectorLayer',
+            layerStyle: function (feature, resolution) {
+                var isYDC = feature.get('filed3') //是否已经调查过
+                var strokeStyle = {
+                    color: TBColors.YL_WDC_SCOLOR,
+                    width: 5,
+                }
+
+                if (isYDC == '已调查') {
+                    strokeStyle = {
+                        color: TBColors.YL_YDC_SCOLOR,
+                        width: 5,
+                    }
+                } else if (isYDC == '已暂存') {
+                    strokeStyle = {
+                        color: TBColors.YL_YZC_SCOLOR,
+                        width: 5,
+                    }
+                }
+
+                //判断是否是伪图斑
+                var isWeiTB = feature.get('filed4')
+                if (isWeiTB == '伪图斑') {
+                    strokeStyle = {
+                        color: TBColors.WTB_SCOLOR,
+                        width: 5,
+                    }
+                }
+
+                var style = new olStyle({
+                    stroke: new olstyleStroke(strokeStyle),
+                    text: new olstyleText({
+                        textAlign: 'center', //位置
+                        textBaseline: 'middle', //基准线
+                        font: 'normal 14px 微软雅黑', //文字样式
+                        text: feature.get('id') || '新增宗地', //文本内容
+                        fill: new olstyleFill({
+                            color: '#aa3300',
+                        }),
+                    }),
+                })
+                return style
+            },
+            zIndex: 113,
+        }
+    };
 
     //临时高亮图层
     that.lightVector = new VectorLayer({
@@ -66,6 +139,7 @@ export function LAYERMANAGER(target, center, zoom) {
         }
     });
 
+    //切换底图
     that.changeBaseMap = function (type) {
         var layers = that.mapObject.getLayers();
         layers.forEach((item) => {
@@ -87,6 +161,7 @@ export function LAYERMANAGER(target, center, zoom) {
         })
     }
 
+    //初始化map
     var init = function () {
         //渲染地图
         var projection = getProjection("EPSG:4326");
@@ -257,12 +332,12 @@ export function LAYERMANAGER(target, center, zoom) {
         that.changeBaseMap(mapType);
     }();
 
-
-
+    //绘制多边形
     that.drawGraphical = function (type, drawend) {
         //实例化绘制对象并添加到地图容器中
         var draw = new Draw({
-            source: new VectorSource(),
+            // source: new VectorSource(),
+            source: that.lightVector.getSource(),
             type: type,
         });
 
@@ -275,6 +350,57 @@ export function LAYERMANAGER(target, center, zoom) {
             that.mapObject.removeInteraction(draw);
             return drawend(evt);
         }, this);
+    }
+
+    //更加uid获取feature
+    that.findFeatureByUid = function (source, uid) {
+        let featureByUid = source.getFeatureByUid(uid)
+        return featureByUid
+    }
+
+    //编辑多边形
+    that.modifyFeature = function (source, end) {
+        that.modifySource = source;
+        // 创建一个Modify控件
+        that.modify = new olModify({
+            source: that.lightVector.getSource(),
+        })
+        // 将Modify控件加入到Map对象中
+        that.mapObject.addInteraction(that.modify)
+
+        that.modify.on('modifystart', (evt) => {
+            var item = evt.features.item(0)
+            var feature = new Feature()
+            feature.setGeometry(item.getGeometry().clone())
+            feature.setGeometryName(item.getGeometryName())
+            feature.setStyle(item.getStyle())
+            feature.ol_uid = item.ol_uid
+            that.undoStack.push(feature)
+        })
+
+        document.getElementById('undo').addEventListener('click', function () {
+            if (that.undoStack.length == 0) {
+                return false
+            }
+            that.lightVector.getSource().clear()
+            let feature = that.undoStack.pop()
+            let findFeatureByUid1 = that.findFeatureByUid(that.modifySource, feature.ol_uid)
+            that.modifySource.removeFeature(findFeatureByUid1)
+            that.modifySource.addFeature(feature)
+        })
+
+        that.modify.on('modifyend', function (evt) {
+            var geo = evt.features.item(0).getGeometry()
+            return end(geo);
+        })
+    }
+
+    //根据坐标串，生成面feature
+    that.getPolygonFeatureByCoor = function (coor) {
+        var feature = new Feature({
+            geometry: new Polygon(coor)
+        });
+        return feature;
     }
 }
 

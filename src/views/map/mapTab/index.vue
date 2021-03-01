@@ -56,7 +56,6 @@ export default {
   position: absolute;
   right: 15px;
   bottom: 50px;
-  width: mapTabWidth;
   z-index: 12;
   // border: 1px solid #aaa;
 

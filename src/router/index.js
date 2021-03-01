@@ -66,9 +66,9 @@ export const constantRoutes = [
     children: [
       {
         path: 'index',
-        name: '地图',
+        name: '数据处理',
         component: () => import('@/views/map/index'),
-        meta: { title: '地图', icon: 'form' }
+        meta: { title: '数据处理', icon: 'form' }
       }
     ]
   },

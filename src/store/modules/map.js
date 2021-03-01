@@ -1,11 +1,15 @@
 // import { resetRouter } from '@/router'
 const state = {
-  mapType: "sl"
+  mapType: "sl",
+  tcArr: []
 }
 
 const actions = {
   changeType({ commit }, mapType) {
     commit('mapType', mapType)
+  },
+  changeTCArr({ commit }, arr) {
+    commit('tcArr', arr)
   }
 }
 

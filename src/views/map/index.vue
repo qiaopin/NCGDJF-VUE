@@ -4,35 +4,30 @@
       <el-button type="primary" size="small" @click="addZD()"
         >新增宗地</el-button
       >
-      <el-button type="primary" size="small">删除宗地</el-button>
-      <el-button type="primary" size="small">编辑宗地</el-button>
+      <el-button type="primary" size="small" @click="removeZD()"
+        >删除宗地</el-button
+      >
+      <el-button type="primary" size="small" @click="modifyZD()"
+        >编辑宗地</el-button
+      >
       <el-button type="primary" size="small" id="undo">撤回</el-button>
     </el-button-group>
 
     <mapTab />
+    <tcgl />
     <div id="mouse-position"></div>
   </div>
 </template>
 <script>
-import VectorSource from 'ol/source/Vector'
-import VectorLayer from 'ol/layer/Vector'
-import TileImage from 'ol/source/TileImage'
-import Feature from 'ol/Feature'
-import Point from 'ol/geom/Point'
-import olStyle from 'ol/style/Style'
-import olstyleIcon from 'ol/style/Icon'
-import olstyleText from 'ol/style/Text'
-import olstyleFill from 'ol/style/Fill'
-import olstyleStroke from 'ol/style/Stroke'
-
 import { LAYERMANAGER, NULAYER } from '@/utils/mapBase'
-
 import mapTab from './mapTab'
+import tcgl from './tcgl'
 
 export default {
   name: 'OlMap',
   components: {
     mapTab,
+    tcgl,
   },
   data() {
     return {
@@ -40,10 +35,10 @@ export default {
       mapObject: null,
       view: null,
       vectorSource: null,
+      lightVector: null, //高亮图层
       ylVector: null, //院落
-      activeFeature: null,
+      activeFeature: null, //当前操作元素
       activityTool: 'default',
-      activityData: {},
     }
   },
   mounted() {
@@ -51,29 +46,22 @@ export default {
     this.mapObject = this.layerManager.mapObject
     this.view = this.mapObject.getView()
     var that = this
+    that.lightVector = that.layerManager.lightVector
+
     //县界
-    var xianjie = new NULAYER({
-      layerId: 'xianjie',
-      layerUrl:
-        'http://110.249.159.162:9997/arcgis/rest/services/NCGDJF/HCFW130000/MapServer',
-      layerName: 'xianjie',
-      opacity: 0.3,
-      zIndex: 1,
-    })
+    var xianjie = new NULAYER(this.layerManager.nuLayers.xianjie)
     this.mapObject.addLayer(xianjie)
 
     var map = this.mapObject
-
     map.on('singleclick', (e) => {
       // console.log(' 没有要素被选中.')
       that.activeFeature = null
-      that.activityData = {}
       var clickRes = []
       var isclickGL = false
-      that.layerManager.lightVector.getSource().clear()
+      that.lightVector.getSource().clear()
 
       if (that.activityTool == 'addZD') {
-        // that.layerManager.lightVector.getSource().clear()
+        // that.lightVector.getSource().clear()
         return false
       }
 
@@ -113,12 +101,12 @@ export default {
         var feature = clickRes[0].feature
         if (layerName == '宗地') {
           that.activeFeature = feature
-          var keys = that.activeFeature.getKeys()
-          keys.forEach(function (v, i) {
-            that.activityData[v] = that.activeFeature.get(v)
-          })
+          // var keys = that.activeFeature.getKeys()
+          // keys.forEach(function (v, i) {
+          //   that.activityData[v] = that.activeFeature.get(v)
+          // })
 
-          that.layerManager.lightVector.getSource().addFeature(feature)
+          that.lightVector.getSource().addFeature(feature)
         }
       } else if (clickRes.length > 1) {
         this.$message.warning('当前点击点附近有多个元素')
@@ -143,70 +131,10 @@ export default {
   methods: {
     initZDLayer() {
       // TODO 宗地图斑
-      var TBColors = {
-        WTB_SCOLOR: '#ccb0c0', //伪图斑
-        WTB_FCOLOR: 'rgba(204, 176, 192,0.7)',
-
-        YL_YDC_SCOLOR: '#177BD0', //宗地已调查
-        YL_YZC_SCOLOR: '#15ca8f', //宗地已暂存
-        // YL_YDC_FCOLOR:"#ffcc33",
-        YL_WDC_SCOLOR: '#ffcc33', //宗地未调查
-        // YL_WDC_FCOLOR:"#ffcc33",
-        YS_SCOLOR: '#ff0000', //疑似图斑
-        CUN_SCOLOR: '#000000', //村界
-        CUN_FCOLOR: 'rgba(0,0,0,.1)', //村界
-      }
-
-      this.ylVector = new NULAYER({
-        layerId: 'ylVector',
-        layerName: '宗地',
-        layerType: 'vectorLayer',
-        layerStyle: function (feature, resolution) {
-          var isYDC = feature.get('filed3') //是否已经调查过
-          var strokeStyle = {
-            color: TBColors.YL_WDC_SCOLOR,
-            width: 5,
-          }
-
-          if (isYDC == '已调查') {
-            strokeStyle = {
-              color: TBColors.YL_YDC_SCOLOR,
-              width: 5,
-            }
-          } else if (isYDC == '已暂存') {
-            strokeStyle = {
-              color: TBColors.YL_YZC_SCOLOR,
-              width: 5,
-            }
-          }
-
-          //判断是否是伪图斑
-          var isWeiTB = feature.get('filed4')
-          if (isWeiTB == '伪图斑') {
-            strokeStyle = {
-              color: TBColors.WTB_SCOLOR,
-              width: 5,
-            }
-          }
-
-          var style = new olStyle({
-            stroke: new olstyleStroke(strokeStyle),
-            text: new olstyleText({
-              textAlign: 'center', //位置
-              textBaseline: 'middle', //基准线
-              font: 'normal 14px 微软雅黑', //文字样式
-              text: feature.get('id') || '新增宗地', //文本内容
-              fill: new olstyleFill({
-                color: '#aa3300',
-              }),
-            }),
-          })
-          return style
-        },
-        zIndex: 113,
-      })
+      this.ylVector = new NULAYER(this.layerManager.nuLayers.ylVector)
       this.mapObject.addLayer(this.ylVector)
     },
+    //新增宗地
     addZD() {
       var that = this
       that.activityTool = 'addZD'
@@ -216,8 +144,29 @@ export default {
         feature.set('filed3', '未调查')
         that.ylVector.getSource().addFeature(feature)
         that.activityTool = 'default'
-        // that.layerManager.lightVector.getSource().addFeature(feature)
+        that.lightVector.getSource().clear()
       })
+    },
+    //删除宗地
+    removeZD() {
+      var that = this
+      if (!that.activeFeature) {
+        this.$message('请先选择要删除的宗地')
+        return false
+      }
+      that.ylVector.getSource().removeFeature(that.activeFeature)
+      that.lightVector.getSource().clear()
+      that.activeFeature = null
+    },
+    //编辑宗地
+    modifyZD() {
+      var that = this
+      that.layerManager.modifyFeature(
+        that.ylVector.getSource(),
+        function (geometry) {
+          console.log(geometry)
+        }
+      )
     },
   },
 }
