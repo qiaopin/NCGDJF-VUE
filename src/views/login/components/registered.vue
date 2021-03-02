@@ -186,11 +186,17 @@
       :label-width="formLabelWidth"
     >
       <el-checkbox-group v-model="registeredForm.js">
-        <el-checkbox label="1" name="js">管理员</el-checkbox>
-        <el-checkbox label="10" name="js">审核员</el-checkbox>
-        <el-checkbox label="100" name="js">复核员</el-checkbox>
-        <el-checkbox label="1000" name="js">填报员-基础信息</el-checkbox>
-        <el-checkbox label="10000" name="js">填报员-管理信息</el-checkbox>
+        <el-checkbox :disabled="js1" label="1" name="js">管理员</el-checkbox>
+        <el-checkbox :disabled="js10" label="10" name="js">审核员</el-checkbox>
+        <el-checkbox :disabled="js100" label="100" name="js"
+          >复核员</el-checkbox
+        >
+        <el-checkbox :disabled="js1000" label="1000" name="js"
+          >填报员-基础信息</el-checkbox
+        >
+        <el-checkbox :disabled="js10000" label="10000" name="js"
+          >填报员-管理信息</el-checkbox
+        >
       </el-checkbox-group>
     </el-form-item>
 
@@ -237,6 +243,7 @@
     </el-form-item>
 
     <el-form-item
+      prop="phoneCode"
       label="验证码"
       :label-width="formLabelWidth"
       :rules="[{ required: true, message: '验证码不能为空', trigger: 'blur' }]"
@@ -276,7 +283,7 @@
 </template>
 
 <script>
-import { getAll } from '@/api/mapProxy'
+// import { getAll } from '@/api/mapProxy'
 export default {
   data() {
     const passwordConfirmLvalidate = (rule, value, callback) => {
@@ -284,28 +291,30 @@ export default {
         callback(new Error('请先输入用户密码'))
       } else if (value !== this.registeredForm.password) {
         callback(new Error('请保持密码与确认密码一致'))
+      } else {
+        callback()
       }
     }
     return {
       options: [
         {
-          shimc: '选项1',
+          shimc: '130626',
           label: '石家庄市',
         },
         {
-          shimc: '选项2',
+          shimc: '130123',
           label: '唐山市',
         },
         {
-          shimc: '选项3',
+          shimc: '130234',
           label: '邯郸市',
         },
         {
-          shimc: '选项4',
+          shimc: '130345',
           label: '唐山市',
         },
         {
-          shimc: '选项5',
+          shimc: '130456',
           label: '邢台市',
         },
       ],
@@ -334,7 +343,6 @@ export default {
             message: '确认密码不能为空',
             trigger: 'blur',
           },
-
           {
             required: true,
             trigger: 'blur',
@@ -353,10 +361,16 @@ export default {
       cRules: false,
       cDisa: true,
       formLabelWidth: '120px',
+      js1: true,
+      js10: true,
+      js100: true,
+      js1000: true,
+      js10000: true,
     }
   },
   watch: {
     'registeredForm.usertype': function (value, oldval) {
+      this.registeredForm.js = []
       if (value === '2') {
         this.xianRules = false
         this.xianDisa = true
@@ -364,6 +378,11 @@ export default {
         this.xzDisa = true
         this.cRules = false
         this.cDisa = true
+        this.js1 = false
+        this.js10 = false
+        this.js100 = false
+        this.js1000 = true
+        this.js10000 = true
       } else if (value === '3') {
         this.xianRules = true
         this.xianDisa = false
@@ -371,6 +390,11 @@ export default {
         this.xzDisa = true
         this.cRules = false
         this.cDisa = true
+        this.js1 = false
+        this.js10 = false
+        this.js100 = false
+        this.js1000 = false
+        this.js10000 = false
       } else if (value === '5') {
         this.xianRules = true
         this.xianDisa = false
@@ -378,6 +402,11 @@ export default {
         this.xzDisa = false
         this.cRules = false
         this.cDisa = true
+        this.js1 = false
+        this.js10 = false
+        this.js100 = false
+        this.js1000 = false
+        this.js10000 = false
       } else if (value === '6') {
         this.xianRules = true
         this.xianDisa = false
@@ -385,6 +414,11 @@ export default {
         this.xzDisa = false
         this.cRules = true
         this.cDisa = false
+        this.js1 = true
+        this.js10 = true
+        this.js100 = true
+        this.js1000 = false
+        this.js10000 = false
       } else {
       }
     },
@@ -404,13 +438,13 @@ export default {
         }
       }, 1000)
 
-      getAll({ phone: this.registeredForm.phone, sendType: 'reg' })
-        .then((res) => {
-          console.log(res)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      // getAll({ phone: this.registeredForm.phone, sendType: 'reg' })
+      //   .then((res) => {
+      //     console.log(res)
+      //   })
+      //   .catch((err) => {
+      //     console.log(err)
+      //   })
 
       // this.$axios({
       //   method: 'post',

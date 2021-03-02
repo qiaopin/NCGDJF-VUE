@@ -45,14 +45,149 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/overallSituation/index',
+    meta: {
+      title: '总体情况', icon: 'shuju_6'
+    },
     children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      path: 'overallSituation',
+      name: 'OverallSituation',
+      component: () => import('@/views/overallSituation/index'),
+      meta: { title: '总体情况', icon: '' }
+    }, {
+      path: 'state',
+      name: 'State',
+      component: () => import('@/views/overallSituation/state/index'),
+      meta: { title: '详细数据', icon: '' }
     }]
   },
+
+  {
+    path: '/projectManagement',
+    component: Layout,
+    redirect: '/projectManagement/index',
+    name: 'ProjectManagement',
+    meta: {
+      title: '项目管理', icon: 'shujuxuanzhong'
+    },
+    children: [
+      {
+        path: 'personnel',
+        name: 'Personnel',
+        component: () => import('@/views/projectManagement/personnel/index'),
+        meta: { title: '人员查询', icon: '' }
+      },
+      {
+        path: 'permissions',
+        name: 'Permissions',
+        component: () => import('@/views/projectManagement/permissions/index'),
+        meta: { title: '权限管理', icon: '' }
+      },
+      {
+        path: 'checkArea',
+        name: 'CheckArea',
+        component: () => import('@/views/projectManagement/checkArea/index'),
+        meta: { title: '核查区管理', icon: '' }
+      }
+    ]
+  },
+
+  {
+    path: '/processingData',
+    component: Layout,
+    redirect: '/processingData/fillData',
+    name: 'ProcessingData',
+    meta: {
+      title: '数据处理', icon: '数据处理'
+    },
+    children: [
+      {
+        path: 'fillData',
+        name: 'FillData',
+        component: () => import('@/views/processingData/fillData/index'),
+        meta: { title: '数据填报', icon: '' }
+      },
+      {
+        path: 'judgeData',
+        name: 'JudgeData',
+        component: () => import('@/views/processingData/judgeData/index'),
+        meta: { title: '数据判断', icon: '' }
+      }
+    ]
+  },
+
+  {
+    path: '/queryData',
+    component: Layout,
+    redirect: '/queryData/ground',
+    name: 'QueryData',
+    meta: {
+      title: '数据查询', icon: '数据查询,数据库查询'
+    },
+    children: [
+      {
+        path: 'ground',
+        name: 'Ground',
+        component: () => import('@/views/queryData/ground/index'),
+        meta: { title: '宗地查询', icon: '' }
+      },
+      {
+        path: 'pseudo',
+        name: 'Pseudo',
+        component: () => import('@/views/queryData/pseudo/index'),
+        meta: { title: '伪宗地查询', icon: '' }
+      }
+    ]
+  },
+
+  {
+    path: '/auditGround',
+    component: Layout,
+    redirect: '/projectManagement/auditGround',
+    name: 'AuditGround',
+    meta: {
+      title: '数据审核', icon: '收费站数据审核'
+    },
+    children: [
+      {
+        path: 'auditGround',
+        name: 'AuditGround',
+        component: () => import('@/views/auditData/auditGround/index'),
+        meta: { title: '宗地审核', icon: '' }
+      },
+      {
+        path: 'pseudoGround',
+        name: 'PseudoGround',
+        component: () => import('@/views/auditData/pseudoGround/index'),
+        meta: { title: '伪宗地审核', icon: '' }
+      }
+    ]
+  },
+
+  {
+    path: '/overallStatistics',
+    component: Layout,
+    redirect: '/outputData/overallStatistics',
+    name: 'OverallStatistics',
+    meta: {
+      title: '数据输出', icon: '输出'
+    },
+    children: [
+      {
+        path: 'overallStatistics',
+        name: 'OverallStatistics',
+        component: () => import('@/views/outputData/overallStatistics/index'),
+        meta: { title: '总体统计', icon: '' }
+      },
+      {
+        path: 'classificationStatistics',
+        name: 'ClassificationStatistics',
+        component: () => import('@/views/outputData/classificationStatistics/index'),
+        meta: { title: '分级统计', icon: '' }
+      }
+    ]
+  },
+
   {
     path: '/slinge',
     component: Layout,
