@@ -4,6 +4,7 @@ import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
 import TileImage from "ol/source/TileImage";
 import Feature from "ol/Feature";
+import WKT from "ol/format/WKT";
 import Point from "ol/geom/Point";
 import Polygon from "ol/geom/Polygon";
 import olStyle from "ol/style/Style";
@@ -409,6 +410,17 @@ export function LAYERMANAGER(target, center, zoom) {
             var geo = evt.features.item(0).getGeometry()
             return end(geo);
         })
+    }
+
+    //根据wkt格式数据获取feature
+    that.getFeatureByWKT = function (wkt) {
+        // var wkt = 'POLYGON ((115.259376 38.03966, 115.259378 38.039622, 115.259382 38.03957,  115.259552 38.03958, 115.259547 38.039632,  115.259376 38.03966))';
+        var format = new WKT();
+        var feature = format.readFeature(wkt, {
+            // dataProjection: 'EPSG:4326',
+            // featureProjection: 'EPSG:3857'
+        });
+        return feature;
     }
 
     //根据坐标串，生成面feature

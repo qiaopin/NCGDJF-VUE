@@ -33,8 +33,6 @@ export default {
     return {
       layerManager: null,
       mapObject: null,
-      view: null,
-      vectorSource: null,
       lightVector: null, //高亮图层
       ylVector: null, //院落
       activeFeature: null, //当前操作元素
@@ -44,7 +42,6 @@ export default {
   mounted() {
     this.layerManager = new LAYERMANAGER()
     this.mapObject = this.layerManager.mapObject
-    this.view = this.mapObject.getView()
     var that = this
     that.lightVector = that.layerManager.lightVector
 
@@ -63,6 +60,12 @@ export default {
     //宗地图层
     this.ylVector = new NULAYER(nlayers.ylVector)
     this.mapObject.addLayer(this.ylVector)
+
+    //测试加载wkt数据
+    var wkt =
+      'POLYGON ((115.259376 38.03966, 115.259378 38.039622, 115.259382 38.03957,  115.259552 38.03958, 115.259547 38.039632,  115.259376 38.03966))'
+    var testF = this.layerManager.getFeatureByWKT(wkt)
+    this.ylVector.getSource().addFeature(testF)
 
     var map = this.mapObject
     map.on('singleclick', (e) => {
