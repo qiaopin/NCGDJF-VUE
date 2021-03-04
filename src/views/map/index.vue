@@ -22,6 +22,7 @@
 import { LAYERMANAGER, NULAYER } from '@/utils/mapBase'
 import mapTab from './mapTab'
 import tcgl from './tcgl'
+import { queryCurrentPolygonByxzqdm } from '@/api/TaskManagerController'
 
 export default {
   name: 'OlMap',
@@ -128,6 +129,22 @@ export default {
         console.log(JSON.stringify(clickRes))
       }
     })
+
+    var postData = {
+      xzqdm: '130827210001',
+      pageIndex: 1,
+      pageSize: 20,
+      numberBs: '1',
+      village: '',
+      id: '',
+    }
+    queryCurrentPolygonByxzqdm(postData)
+      .then((Response) => {
+        console.log(Response)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   },
   computed: {
     getMapType() {

@@ -414,7 +414,6 @@ export function LAYERMANAGER(target, center, zoom) {
 
     //根据wkt格式数据获取feature
     that.getFeatureByWKT = function (wkt) {
-        // var wkt = 'POLYGON ((115.259376 38.03966, 115.259378 38.039622, 115.259382 38.03957,  115.259552 38.03958, 115.259547 38.039632,  115.259376 38.03966))';
         var format = new WKT();
         var feature = format.readFeature(wkt, {
             // dataProjection: 'EPSG:4326',
