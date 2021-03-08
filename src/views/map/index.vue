@@ -15,6 +15,7 @@
 
     <mapTab />
     <tcgl ref="tcglRef"></tcgl>
+    <leftTable class="leftTableBox" />
     <div id="mouse-position"></div>
   </div>
 </template>
@@ -22,6 +23,7 @@
 import { LAYERMANAGER, NULAYER } from '@/utils/mapBase'
 import mapTab from './mapTab'
 import tcgl from './tcgl'
+import leftTable from './leftTable'
 import { queryCurrentPolygonByxzqdm } from '@/api/TaskManagerController'
 
 export default {
@@ -29,6 +31,7 @@ export default {
   components: {
     mapTab,
     tcgl,
+    leftTable,
   },
   data() {
     return {
@@ -209,6 +212,8 @@ export default {
 <style>
 #map {
   height: calc(100vh - 50px);
+  width: calc(100% - 500px);
+  margin-left: 500px;
 }
 #mouse-position {
   text-align: center;
@@ -232,5 +237,15 @@ export default {
   right: 15px;
   top: 15px;
   z-index: 11;
+}
+
+.leftTableBox {
+  position: absolute;
+  z-index: 11;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 500px;
+  background: #fff;
 }
 </style>

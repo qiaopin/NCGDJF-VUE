@@ -43,8 +43,8 @@ export default {
 <style lang="scss" scoped>
 .tcBox {
   position: absolute;
-  left: 50px;
-  top: 15px;
+  right: 15px;
+  top: 55px;
   z-index: 12;
   width: 130px;
   //   border: 1px solid #eee;
