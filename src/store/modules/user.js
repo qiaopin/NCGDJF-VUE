@@ -32,13 +32,15 @@ const actions = {
   login({ commit }, userInfo) {
     const { phone, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ phone: phone.trim(), password: password }).then(response => {
+      login({ username: phone.trim(), password: password }).then(response => {
         // sessionStorage.setItem("token", response.date);
         const { ...data } = response
         // console.log(response)
         // console.log(data)
-        commit('SET_TOKEN', data.date)
-        setToken(data.date)
+        let tokenStr = data.data.tokenHead + data.data.token;
+        commit('SET_TOKEN', tokenStr)
+        commit('SET_NAME', phone.trim())
+        setToken(tokenStr)
         resolve()
       }).catch(error => {
         reject(error)
@@ -49,9 +51,8 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
+      getInfo({ name: state.name }).then(response => {
         const { data } = response
-
         if (!data) {
           return reject('验证失败，请重新登录.')
         }

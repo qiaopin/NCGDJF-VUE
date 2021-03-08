@@ -80,6 +80,12 @@
 
     <el-dialog class="openLay" title="注册" :visible.sync="registered">
       <registered></registered>
+      <div slot="footer" class="dialog-footer">
+        <!-- <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false"
+          >确 定</el-button
+        > -->
+      </div>
     </el-dialog>
 
     <el-dialog class="customWidth" title="下载" :visible.sync="showDialog">
@@ -96,6 +102,7 @@
 // import { validUsername } from "@/utils/validate";
 import $ from 'jquery'
 import md5 from 'js-md5'
+let Base64 = require('js-base64').Base64
 import ShowDialog from './components/showDialog'
 import ForgetPassword from './components/forgetPassword'
 import Registered from './components/registered'
@@ -120,7 +127,7 @@ export default {
     }
     return {
       loginForm: {
-        phone: '18600000001',
+        phone: 'yyq',
         password: '1',
       },
 
@@ -164,19 +171,21 @@ export default {
     handleLogin() {
       let paramt = {
         phone: this.loginForm.phone,
-        password: this.$md5(this.loginForm.password),
+        // password: this.$md5(this.loginForm.password),
+        password: Base64.encode(this.loginForm.password),
       }
+      let that = this
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true
-          this.$store
           this.$store
             .dispatch('user/login', paramt)
             .then((res) => {
               // sessionStorage.setItem("token", res.date);
               //vuex中的数据刷新页面会消失
-              // this.$router.push({ path: this.redirect || '/' })
-              this.$router.push({ path: '/slinge' })
+              this.$router.push({ path: this.redirect || '/' })
+              // this.$router.push({ path: '/slinge' }){
+              // that.getUserInfo()
               this.loading = false
             })
             .catch((err) => {
@@ -187,6 +196,18 @@ export default {
           return false
         }
       })
+    },
+    getUserInfo() {
+      this.$store
+        .dispatch('user/getInfo')
+        .then((res) => {
+          console.log('登录后获取用户信息成功，跳转到首页')
+          this.$router.push({ path: this.redirect || '/' })
+        })
+        .catch((err) => {
+          console.log('获取用户信息失败')
+          this.loading = false
+        })
     },
   },
 }
@@ -244,7 +265,7 @@ $cursor: #fff;
 }
 
 .openLay {
-  width: 60%;
+  width: 900px;
   margin: 0 auto;
 
   .FPForm {
