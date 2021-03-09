@@ -40,7 +40,14 @@ export default {
 
       if (!this.isDashboard(first)) {
         matched = [
+<<<<<<< HEAD
           { path: '/dashboard', meta: { title: '农村耕地建房' } },
+=======
+          {
+            path: '/dashboard',
+            meta: { title: '河北省农村乱占耕地建房专项整治系统平台' },
+          },
+>>>>>>> 493d200e119507ccd0c348a1fdff0c218ba4707d
         ].concat(matched)
       }
 

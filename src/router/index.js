@@ -58,7 +58,11 @@ export const constantRoutes = [
       path: 'state',
       name: 'State',
       component: () => import('@/views/overallSituation/state/index'),
-      meta: { title: '详细数据', icon: '' }
+      meta: { title: '详细数据', icon: '' },
+      path: 'dashboard',
+      name: '首页',
+      component: () => import('@/views/dashboard/index'),
+      meta: { title: '首页', icon: 'dashboard' }
     }]
   },
 
@@ -247,9 +251,9 @@ export const constantRoutes = [
     children: [
       {
         path: 'index',
-        name: '地图',
+        name: '数据处理',
         component: () => import('@/views/map/index'),
-        meta: { title: '地图', icon: 'form' }
+        meta: { title: '数据处理', icon: 'form' }
       }
     ]
   },
