@@ -59,10 +59,6 @@ export const constantRoutes = [
       name: 'State',
       component: () => import('@/views/overallSituation/state/index'),
       meta: { title: '详细数据', icon: '' },
-      path: 'dashboard',
-      name: '首页',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '首页', icon: 'dashboard' }
     }]
   },
 
