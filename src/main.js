@@ -38,9 +38,11 @@ Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
-new Vue({
+var vue = new Vue({
   el: '#app',
   router,
   store,
   render: h => h(App)
 })
+
+export default vue 

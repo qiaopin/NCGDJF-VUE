@@ -1,17 +1,27 @@
 <template>
   <div class="mapTab">
-    <div class="tabItem" v-for="(item, index) in mapTabArr" :key="index">
+    <div
+      :class="
+        item.type == $store.getters.mapType ? 'active tabItem' : 'tabItem'
+      "
+      v-for="(item, index) in mapTabArr"
+      :key="index"
+      @click="changeBaseMap(item.type)"
+    >
       <img :src="item.imgSrc" alt="" />
-      <div class="title">{{ item.title }}</div>
+      <div class="title">
+        {{ item.title }}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+// import store from '@/store'
+
 export default {
   data() {
     return {
-      activeType: 'sl',
       mapTabArr: [
         {
           imgSrc: require('../../../assets/images/mapTab/ditu.jpg'),
@@ -31,6 +41,13 @@ export default {
       ],
     }
   },
+  mounted() {},
+  watch: {},
+  methods: {
+    changeBaseMap(type) {
+      this.$store.commit('SET_MAPTYPE', type)
+    },
+  },
 }
 </script>
 
@@ -39,9 +56,15 @@ export default {
   position: absolute;
   right: 15px;
   bottom: 50px;
-  width: mapTabWidth;
-  z-index: 11;
-  border: 1px solid #aaa;
+  z-index: 12;
+  // border: 1px solid #aaa;
+
+  .tabItem {
+    position: relative;
+    margin-bottom: 8px;
+    border: 1px solid #eee;
+    cursor: pointer;
+  }
 
   .title {
     position: absolute;
@@ -50,6 +73,15 @@ export default {
     padding: 2px 0;
     width: 100%;
     left: 0;
+    text-align: center;
+    font-size: 14px;
+    opacity: 0.5;
+  }
+
+  .active .title {
+    background: #83a1ff;
+    color: #fff;
+    opacity: 1;
   }
 }
 </style>

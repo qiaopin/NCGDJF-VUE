@@ -60,7 +60,7 @@ module.exports = {
       },
       // 配置跨域地址
       '/api': {
-        target: `http://124.193.79.18:8099/gdjfnx`,
+        target: `http://192.168.1.169:8091`,
         changeOrigin: true,
         ws: true,
         pathRewrite: {
