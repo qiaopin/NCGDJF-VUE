@@ -141,13 +141,13 @@ export default {
       village: '',
       id: '',
     }
-    queryCurrentPolygonByxzqdm(postData)
-      .then((Response) => {
-        console.log(Response)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    // queryCurrentPolygonByxzqdm(postData)
+    //   .then((Response) => {
+    //     console.log(Response)
+    //   })
+    //   .catch((error) => {
+    //     console.log(error)
+    //   })
   },
   computed: {
     getMapType() {
