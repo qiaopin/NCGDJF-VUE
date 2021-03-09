@@ -59,8 +59,6 @@ module.exports = {
         }
       },
       // 配置跨域地址
-      // '/nodeMiddle': {
-      //   target: `http://110.249.159.162:8099`,
       '/api': {
         target: `http://192.168.1.169:8091`,
         changeOrigin: true,
