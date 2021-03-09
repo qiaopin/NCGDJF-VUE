@@ -5,7 +5,8 @@
 </template>
 
 <script>
+import { setToken } from './utils/auth'
 export default {
-  name: 'App'
+  name: 'App',
 }
 </script>

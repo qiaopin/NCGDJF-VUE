@@ -184,7 +184,6 @@ export default {
               // sessionStorage.setItem("token", res.date);
               //vuex中的数据刷新页面会消失
               this.$router.push({ path: '/' })
-              // this.$router.push({ path: '/slinge' }){
               // that.getUserInfo()
               this.loading = false
             })
