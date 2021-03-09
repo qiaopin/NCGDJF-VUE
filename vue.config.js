@@ -59,12 +59,12 @@ module.exports = {
         }
       },
       // 配置跨域地址
-      '/gdjfnx': {
+      '/api': {
         target: `http://124.193.79.18:8099/gdjfnx`,
         changeOrigin: true,
         ws: true,
         pathRewrite: {
-          '^/gdjfnx': ''
+          '^/api': ''
         }
       },
       // 配置跨域地址
