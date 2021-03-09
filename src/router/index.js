@@ -36,16 +36,12 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-  {
-    path: '/404',
-    component: () => import('@/views/404'),
-    hidden: true
-  },
+
 
   {
     path: '/',
     component: Layout,
-    redirect: '/overallSituation/index',
+    redirect: '/overallSituation',
     meta: {
       title: '总体情况', icon: 'shuju_6'
     },
@@ -95,24 +91,13 @@ export const constantRoutes = [
   {
     path: '/processingData',
     component: Layout,
-    redirect: '/processingData/fillData',
-    name: 'ProcessingData',
-    meta: {
-      title: '数据处理', icon: '数据处理'
-    },
     children: [
       {
         path: 'fillData',
         name: 'FillData',
         component: () => import('@/views/processingData/fillData/index'),
-        meta: { title: '数据填报', icon: '' }
+        meta: { title: '数据处理', icon: '数据处理' }
       },
-      {
-        path: 'judgeData',
-        name: 'JudgeData',
-        component: () => import('@/views/processingData/judgeData/index'),
-        meta: { title: '数据判断', icon: '' }
-      }
     ]
   },
 
@@ -356,6 +341,11 @@ export const constantRoutes = [
         meta: { title: 'External Link', icon: 'link' }
       }
     ]
+  },
+  {
+    path: '/404',
+    component: () => import('@/views/404'),
+    hidden: true
   },
 
   // 404 page must be placed at the end !!!
